@@ -1,0 +1,2174 @@
+\documentclass[11pt,reqno,letterpaper]{amsart}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{needspace}
+\usepackage[hidelinks]{hyperref}
+\usepackage{bookmark,xurl}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\td}{\operatorname{td}}
+\newcommand{\ch}{\operatorname{ch}}
+\newcommand{\sgn}{\operatorname{sign}}
+\newcommand{\Pic}{\operatorname{Pic}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Proj}{\operatorname{Proj}}
+\newcommand{\Ahat}{\widehat A}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\kk}{\mathbf k}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\allowdisplaybreaks[2]
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=4pt}
+\title[Fano manifolds with the cohomology ring of projective space]{On Fano manifolds with the integral cohomology ring of projective space}
+\date{}
+\begin{document}
+\begin{abstract}
+Fujita conjectured that a complex Fano manifold with the integral cohomology
+ring of complex projective space is biholomorphic to projective space.
+We prove the conjecture in dimensions at most ten. We also prove it in
+arbitrary dimension $n$ when the Fano index is at least $n-3$, and in even
+dimension when the index is at least $n-7$. The proofs combine
+Hirzebruch--Riemann--Roch with bounds on spaces of sections. These give
+finitely many possible Hilbert polynomials, which are excluded by
+characteristic-number identities and congruences. Two cases require an
+additional argument using section rings of genus-two curves. The finite
+calculations are carried out by an accompanying Python program.
+\end{abstract}
+\maketitle
+
+\section{Introduction}\label{sec:intro}
+
+A compact K\"ahler manifold homeomorphic to $\PP^n$ is biholomorphic to
+$\PP^n$. This characterization follows from work of Hirzebruch and
+Kodaira, Novikov, and Yau; see \cite[Theorem 1]{debarre}. Its proof uses
+the rational Pontryagin classes, which are determined by the
+homeomorphism type, in a Riemann--Roch calculation. An isomorphism of
+integral cohomology rings does not prescribe these classes.
+
+Recall that a \emph{Fano manifold} is a smooth projective complex
+manifold whose anticanonical line bundle $K_X^{-1}$ is ample.
+Fujita formulated the following conjecture in \cite[\S1]{fujita}.
+
+\begin{conjecture}[Fujita, $C_n$]\label{conj:fujita}
+Let $X$ be a Fano manifold of dimension $n$ with
+\[
+ H^*(X;\Z)\simeq H^*(\PP^n;\Z)
+\]
+as graded rings. Then $X$ is biholomorphic to $\PP^n$.
+\end{conjecture}
+
+The ring structure is essential. An odd-dimensional smooth quadric has
+the same integral cohomology groups as projective space, but in dimension
+at least three the top power of its ample generator has degree two.
+For projective space this degree is one, and it is this restriction that
+will give bounds on spaces of sections in our argument.
+
+Fujita proved $C_n$ for $n\le5$ \cite[Theorem 1]{fujita}.
+The work of Libgober and Wood \cite{lw} extends the relevant
+characteristic-number arguments to dimension six. Debarre
+\cite[Theorem 2]{debarre} gives the resulting classification under the
+integral cohomology-ring hypothesis: in dimensions at most six, a compact
+K\"ahler manifold with this ring is projective space, with the possible
+exception of ball quotients in dimensions four and six. The latter have
+ample canonical bundle and hence do not occur in the Fano case.
+In dimension seven, Debarre's calculation leaves the possibilities
+$c_1(X)^7\in\{\pm2^7,\pm4^7\}$ besides projective space
+\cite[Theorem 10]{debarre}. For a Fano manifold these are the two positive
+indices $2$ and $4$.
+
+Fujita's conjecture arose together with his conjectures $A_n$ and $B_n$
+on compactifications and hyperplane sections. More recently, Li and
+Peternell \cite{lp} proved that a compact K\"ahler manifold containing a
+smooth connected divisor with homologically trivial complement is
+projective space with a hyperplane, provided $n\not\equiv3\pmod4$.
+Their hypothesis includes a distinguished divisor. Conjecture $C_n$
+assumes only the cohomology ring and positivity of the anticanonical
+bundle, so such a divisor is not available at the outset.
+
+We prove the following case of Fujita's conjecture.
+
+\begin{theorem}\label{thm:dimension}
+Let $X$ be a Fano manifold of dimension $n\le10$ with
+$H^*(X;\Z)\simeq H^*(\PP^n;\Z)$ as graded rings.
+Then $X$ is biholomorphic to $\PP^n$.
+\end{theorem}
+
+\Needspace{8\baselineskip}
+The \emph{Fano index} of a Fano manifold $X$ is the
+largest positive integer $r$ for which
+\[
+ K_X^{-1}\simeq A^{\otimes r}
+\]
+for some holomorphic line bundle $A$. Such a line bundle $A$ is
+necessarily ample. Under the cohomology-ring hypothesis of Conjecture
+\ref{conj:fujita}, the first Chern class identifies $\Pic(X)$ with
+$H^2(X;\Z)\simeq\Z$. If $L$ is its ample generator and $x=c_1(L)$,
+then the index is the positive integer $r$ determined by
+\[
+ K_X^{-1}\simeq L^{\otimes r},\qquad c_1(T_X)=rx,
+ \qquad \int_Xx^n=L^n=1.
+\]
+We also obtain the following result in arbitrary dimension.
+
+\begin{theorem}\label{thm:index}
+Let $X$ be a Fano manifold of dimension $n$ with
+$H^*(X;\Z)\simeq H^*(\PP^n;\Z)$ as graded rings, and let $r$ be its
+Fano index. Then $X$ is biholomorphic to $\PP^n$ if either of the following
+conditions holds:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $r\ge n-3$;
+\item $n$ is even and $r\ge n-7$.
+\end{enumerate}
+\end{theorem}
+
+\subsection{Outline of the proof}
+
+By the theorem of Kobayashi and Ochiai \cite{ko}, a Fano $n$-fold has
+index at most $n+1$, with equality precisely for $\PP^n$. To prove
+Theorems \ref{thm:dimension} and \ref{thm:index}, it therefore suffices
+to exclude the possible indices $r<n+1$ under their respective
+hypotheses.
+
+We first use the cohomology ring to restrict $r$. The Hodge numbers are
+those of $\PP^n$, so $\chi(X,\Omega_X^p)=(-1)^p$. Writing
+$c_j(T_X)=c_jx^j$, Riemann--Roch and integrality give
+\begin{equation}\label{eq:introindices}
+ c_n=n+1,\qquad
+ r c_{n-1}=\frac{n(n+1)^2}{2},\qquad
+ r\equiv n+1\pmod2.
+\end{equation}
+In particular, $r$ is a positive divisor of $n(n+1)^2/2$, of the
+specified parity, and at most $n+1$. In dimensions seven through ten
+the possibilities are as follows.
+\[
+\begin{array}{c|c|c}
+n&\text{indices to exclude}&\text{index of projective space}\\\hline
+7&2,4&8\\
+8&1,3&9\\
+9&2,6&10\\
+10&1,5&11
+\end{array}
+\]
+
+For each remaining index we consider the Hilbert polynomial
+$P(t)=\chi(X,L^t)$. Kodaira vanishing gives
+\[
+ P(-1)=\cdots=P(-(r-1))=0,
+ \qquad P(j)=h^0(X,L^j)\quad(j\ge0),
+\]
+and Serre duality gives $P(-r-t)=(-1)^nP(t)$. These identities, the
+leading coefficient $1/n!$, and $P(0)=1$ determine $P$ from the first
+few section dimensions $h^0(X,L^j)$; the precise parametrization is
+given in Section \ref{sec:hilbert}. The intersection-theoretic bound
+\[
+ h^0(X,L^j)\le j^n+n
+\]
+then puts these parameters in finite intervals. No assumption that $L$
+is globally generated is required for this bound.
+
+The resulting Hilbert polynomials must satisfy further
+characteristic-number identities. In odd dimensions we use
+$\chi(X,\Omega_X^p)=(-1)^p$ to eliminate Chern coefficients or Chern
+power sums. This produces a polynomial equation in an integer variable,
+with coefficients depending on the bounded section dimensions. In even
+dimensions we use the signature. The middle intersection form is $(1)$
+in the complex orientation, so $\sgn(X)=1$. The Hilbert polynomial
+determines the Todd class and hence, after removing the factor
+$e^{c_1/2}$, the $\widehat A$-class. A characteristic power-series
+identity then recovers the signature and gives a polynomial equation in
+the section dimensions.
+
+We exclude integer solutions of these equations by congruences and
+discriminant calculations. For $n=7$ and $r=4$, reduction modulo nine
+gives a contradiction. For $n=7$ and $r=2$, the discriminant is not a
+square for any of the $1224$ allowed pairs of section dimensions.
+In the other computational cases, we fix the bounded parameters and
+reduce the polynomial in the remaining variable modulo small primes or
+prime powers. For each parameter tuple, one of these reductions has
+no root. This excludes an integer root without requiring a bound on
+the remaining variable.
+
+The assertions in arbitrary dimension also reduce to finitely many
+cases. Put $c=n+1-r$. Equation \eqref{eq:introindices} implies
+\[
+ r\mid\frac{c^2(c-1)}2.
+\]
+For each fixed positive $c$, only finitely many pairs $(n,r)$ remain.
+We treat $c=2,4$, and also $c=6,8$ when $n$ is even. Most of these pairs
+are excluded by the same Riemann--Roch or signature calculations. For
+$(n,r)=(15,12),(27,24)$, integrality of the twelfth Chern power sum,
+using the numerator $691$ of $B_{12}$, forces $h^0(L)=n$ or $n-1$ after
+the projective-space case is removed. General sections then cut out an
+integral Gorenstein curve of arithmetic genus two. Its section ring
+determines a weighted complete-intersection presentation of $X$.
+The Euler characteristic of either presentation differs from $n+1$,
+giving the required contradiction.
+
+The finite calculations are performed by the accompanying Python file
+\nolinkurl{verify_fujita_further_extensions.py}, which we call the
+\emph{verification program}. It derives the polynomial equations from
+the recurrences in the article and carries out the integer-square and
+congruence tests, using exact integer and rational arithmetic.
+Section \ref{sec:python} explains the implementation and its relation
+to the proofs. The source is distributed separately.
+
+Sections \ref{sec:basic}--\ref{sec:hilbert} establish the numerical and
+characteristic-class formulas. Sections \ref{sec:C7}--\ref{sec:C10}
+treat dimensions seven through ten. The index bounds are proved in
+Sections \ref{sec:high} and \ref{sec:even}. The appendices contain the
+longer polynomial expressions and the complete sieve tables.
+In dimension eleven, the restrictions above leave $r=2,4,6,8,12$;
+our argument excludes $8$, while $12$ gives projective space.
+The cases $r=2,4,6$ remain open in this approach.
+
+Throughout, $\PP^n$ denotes complex projective space. We use additive
+notation for tensor products of line bundles when convenient, so that
+$-K_X=rL$ means $K_X^{-1}\simeq L^{\otimes r}$. Characteristic classes
+and their evaluations are taken in the complex orientation.
+
+\section{Numerical restrictions}\label{sec:basic}
+
+\subsection{The ample generator}
+Because $X$ is projective, it is K\"ahler. An ample divisor class and each of its
+powers are nonzero by positivity. Since $H^{2p}(X;\C)$ has dimension one, that
+class spans its $(p,p)$ part. Hodge decomposition therefore gives
+\begin{equation}\label{eq:hodge}
+ h^{p,q}(X)=
+ \begin{cases}1&p=q,\ 0\le p\le n,\\0&\text{otherwise}.\end{cases}
+\end{equation}
+In particular $H^1(X,\OO_X)=H^2(X,\OO_X)=0$. The exponential sequence implies
+\[
+ c_1:\Pic(X)\xrightarrow{\ \simeq\ }H^2(X;\Z)\simeq\Z.
+\]
+One of the two primitive generators corresponds to a line bundle $L$ with an
+ample positive power, and hence $L$ itself is ample. Set $x=c_1(L)$.
+The ring assumption says that $\int_Xx^n$ is either $1$ or $-1$; positivity of
+an ample class in the complex orientation gives
+\begin{equation}\label{eq:degreeone}
+ \int_Xx^n=1.
+\end{equation}
+All characteristic classes will be expressed using this choice. Write
+$c_j(T_X)=c_jx^j$, so that the symbols $c_j$ on the right are integers.
+Since $-K_X$ is ample, its coefficient $r=c_1$ is a positive integer.
+
+\subsection{Holomorphic Euler characteristics}
+Equation \eqref{eq:hodge} gives, for every $p$,
+\begin{equation}\label{eq:chiOmega}
+ \chi(X,\Omega_X^p)=\sum_q(-1)^q h^{p,q}(X)=(-1)^p.
+\end{equation}
+It also gives $\chi_{\mathrm{top}}(X)=n+1$. The top Chern class is the Euler
+class of the underlying real tangent bundle, so
+\begin{equation}\label{eq:cn}
+ c_n=n+1.
+\end{equation}
+
+We derive the relation between $c_1c_{n-1}$ and $c_n$ from the $\chi_y$-genus.
+Let $\alpha_1,\ldots,\alpha_n$ be formal Chern roots, and put
+$\chi_y(X)=\sum_p\chi(X,\Omega_X^p)y^p$. Riemann--Roch gives
+\[
+ \chi_{-1+t}(X)=
+ \int_X\prod_{i=1}^n
+ \alpha_i\left(1+\frac{t}{e^{\alpha_i}-1}\right).
+\]
+Use
+\[
+ \frac1{e^\alpha-1}=\frac1\alpha-\frac12+\frac{\alpha}{12}
+                  +\text{terms of degree at least three}.
+\]
+In the coefficient of $t^2$, only the terms with total root-degree zero
+after multiplication by $\prod_i\alpha_i$ contribute to the integral.
+They give
+\[
+ [t^2]\chi_{-1+t}(X)=
+ \frac14\binom n2 c_n+
+ \frac1{12}\left(c_1c_{n-1}-nc_n\right)
+ =\frac{n(3n-5)c_n}{24}+\frac{c_1c_{n-1}}{12}.
+\]
+To see the middle equality, expand
+$c_1c_{n-1}=(\sum_j\alpha_j)(\sum_i\prod_{k\ne i}\alpha_k)$;
+the $i=j$ terms give $nc_n$.
+On the other hand, \eqref{eq:chiOmega} gives
+\[
+ \chi_{-1+t}(X)=\sum_{p=0}^n(1-t)^p,\qquad
+ [t^2]\chi_{-1+t}(X)=\sum_{p=0}^n\binom p2=\binom{n+1}{3}.
+\]
+Substitute $c_n=n+1$ and solve:
+\begin{equation}\label{eq:rcn}
+ r c_{n-1}=\frac{n(n+1)^2}{2}.
+\end{equation}
+In particular, $r$ divides the integer on the right.
+
+\subsection{The Hilbert polynomial and the index}
+Let $P(t)=\chi(X,L^t)$. Riemann--Roch gives a polynomial of degree $n$:
+\begin{equation}\label{eq:P-leading}
+ P(t)=\frac{t^n}{n!}+\frac{rt^{n-1}}{2(n-1)!}+\cdots,\qquad P(0)=1.
+\end{equation}
+The leading coefficient uses \eqref{eq:degreeone}, and the next coefficient
+uses $\td_1=c_1/2$.
+
+For an integer $t>-r$,
+\[
+ L^t=K_X\otimes L^{t+r}.
+\]
+The second factor is ample, so Kodaira vanishing gives
+$H^i(X,L^t)=0$ for $i>0$. If $t<0$, an anti-ample line bundle has no section:
+a nonzero section would give an effective divisor with negative intersection
+against $L^{n-1}$. It follows that
+\begin{equation}\label{eq:kodaira}
+ P(t)=h^0(X,L^t)\quad(t\ge0),\qquad
+ P(-1)=\cdots=P(-(r-1))=0.
+\end{equation}
+There are $r-1$ distinct roots of a nonzero polynomial of degree $n$, hence
+\begin{equation}\label{eq:rbound}
+ 1\le r\le n+1.
+\end{equation}
+Serre duality also gives the polynomial identity
+\begin{equation}\label{eq:SerreP}
+ P(-r-t)=(-1)^nP(t).
+\end{equation}
+
+The parity restriction can be obtained without any assertion about Pontryagin
+classes. The polynomial
+\[
+ P(t)-\binom{t+n}{n}
+\]
+is integer-valued on integers and has degree at most $n-1$. Its leading
+coefficient is $(r-n-1)/(2(n-1)!)$. The $(n-1)$st forward difference of an
+integer-valued polynomial of degree at most $n-1$ is its leading coefficient
+times $(n-1)!$, and is an integer. Thus
+\begin{equation}\label{eq:parity}
+ r\equiv n+1\pmod2.
+\end{equation}
+Here $\Delta f(t)=f(t+1)-f(t)$;
+applying it $d$ times to $at^d$ gives $d!a$.
+
+\subsection{The signature}
+If $n$ is even, the middle real cohomology of the real $2n$-manifold $X$ is
+$H^n(X;\mathbb R)=\mathbb R x^{n/2}$. Its intersection matrix is the
+one-by-one matrix
+\[
+ \left(\int_Xx^{n/2}x^{n/2}\right)=(1).
+\]
+Consequently
+\begin{equation}\label{eq:signatureone}
+ \sgn(X)=1.
+\end{equation}
+Here the fundamental class is taken in the complex orientation, for which
+$\int_Xx^n=1$ by ampleness.
+
+\section{Spaces of sections}\label{sec:sections}
+
+\subsection{The degree bound}
+We use the elementary inequality
+\begin{equation}\label{eq:min-degree}
+ \deg Z\ge N-d+1
+\end{equation}
+for an integral nondegenerate $d$-dimensional variety $Z\subset\PP^N$.
+Here nondegenerate means that $Z$ is not contained in a hyperplane.
+One proof cuts by general hyperplanes. Such a section remains nondegenerate:
+from $H^0(\OO_Z)=\C$ one has $H^1(\mathcal I_Z)=0$, and the restriction
+sequence for the ideal shows that a new linear equation on a hyperplane
+section would have come from a linear equation on $Z$.
+General sections of positive dimension are integral by Bertini.
+After $d$ cuts one has a zero-dimensional scheme of length $\deg Z$
+spanning $\PP^{N-d}$. The restrictions of its $N-d+1$ independent linear
+coordinates are independent sections of a line bundle on a scheme of that
+length; hence the length is at least $N-d+1$.
+
+\begin{lemma}\label{lem:sectionbound}
+If $A$ is ample on a smooth projective $n$-fold, then
+$h^0(X,A)\le A^n+n$.
+\end{lemma}
+\begin{proof}
+The claim is immediate if $h^0(A)\le1$. Otherwise resolve the complete linear
+system by $\mu:Y\to X$ and write
+\[
+ \mu^*A=M+E,
+\]
+where $M$ is globally generated and $E$ is effective. Both $\mu^*A$ and $M$
+are nef. Let $d$ be the dimension of the image
+$Z\subset\PP^{h^0(A)-1}$.
+Telescoping powers, each term of the difference
+$(\mu^*A)^n-(\mu^*A)^{n-d}M^d$ is an intersection of $E$ with nef classes;
+therefore it is nonnegative. The projection formula gives
+\[
+ A^n\ge(\mu^*A)^{n-d}M^d\ge\deg Z.
+\]
+The middle intersection is $\deg Z$ times a positive integer: the
+$\mu^*A$-degree of a general fiber, or the generic degree if $d=n$.
+A general fiber meets the locus where $\mu$ is an isomorphism, so its image
+has the same dimension and positive degree with respect to $A$.
+By \eqref{eq:min-degree}, $\deg Z\ge h^0(A)-d$.
+Since $d\le n$, the result follows.
+\end{proof}
+Applying this to $A=L^k$ gives
+\begin{equation}\label{eq:sectionbound}
+ 0\le h^0(X,L^k)\le k^n+n\qquad(k\ge1).
+\end{equation}
+
+\begin{lemma}\label{lem:base}
+Suppose $L^n=1$ and $m=h^0(X,L)>0$. The image of $|L|$ is the full
+$\PP^{m-1}$. If the base scheme is nonempty, its codimension is $m$.
+\end{lemma}
+\begin{proof}
+With $A=\mu^*L$, the proof above gives
+\[
+ 1=A^n\ge A^{n-d}M^d\ge\deg Z\ge m-d\ge1.
+\]
+Every inequality is an equality. In particular, $d=m-1$, so the closed
+image in $\PP^{m-1}$ is all of that space.
+
+Let the base scheme have codimension $b<m$. Choose $b$ general members of
+$|L|$. They intersect properly: before the $b$th cut the base scheme cannot
+force a component of smaller codimension, and general sections avoid all
+other components at each stage. Their intersection cycle contains a
+base-locus component. It also contains a component outside the base locus,
+because $b$ general hyperplanes intersect the dense open image in
+$\PP^{m-1}$. These are distinct effective components, each with positive
+integral $L$-degree. Their total $L$-degree, however, is $L^n=1$.
+This is impossible. Thus $b\ge m$. An ideal generated by the $m$ sections
+has height at most $m$, which gives $b=m$.
+\end{proof}
+
+\begin{lemma}\label{lem:equality}
+If $h^0(X,L)=n+1$, then $(X,L)\simeq(\PP^n,\OO_{\PP^n}(1))$.
+Also, if $r=n+1$, then $X\simeq\PP^n$.
+\end{lemma}
+\begin{proof}
+The preceding lemma makes the base scheme empty when $m=n+1$.
+The resulting map $f:X\to\PP^n$ has $L=f^*\OO(1)$. Ampleness of $L$
+precludes a positive-dimensional fiber, since any curve in such a fiber
+would have $L$-degree zero. Thus $f$ is finite. Its degree is $L^n=1$.
+A finite birational map to a normal variety is an isomorphism.
+
+If $r=n+1$, the $n$ roots in \eqref{eq:kodaira} and the leading coefficient
+of $P$ determine
+\[
+ P(t)=\frac{(t+1)\cdots(t+n)}{n!}.
+\]
+Then $h^0(L)=P(1)=n+1$ and the first assertion applies.
+\end{proof}
+The second assertion is the equality case of the Kobayashi--Ochiai
+characterization \cite{ko}; the proof above uses the additional hypothesis
+$L^n=1$. For $r<n+1$, the first assertion gives $0\le h^0(L)\le n$.
+The weaker bound $n+1$ will suffice in dimensions seven and eight.
+
+\section{Characteristic classes and Riemann--Roch}\label{sec:formal}
+
+\subsection{Formal roots and Newton identities}
+Let $s_j$ be the coefficient of $x^j$ in the $j$th power sum of the
+Chern roots, with $s_0=n$. Thus $s_1=r$. The $s_j$ are symmetric polynomials in the formal Chern roots.
+Newton's identities give
+\begin{equation}\label{eq:newton}
+ c_k=\frac1k\sum_{j=1}^k(-1)^{j-1}s_jc_{k-j},\qquad c_0=1.
+\end{equation}
+Conversely,
+\[
+ s_k=\sum_{j=1}^{k-1}(-1)^{j-1}c_js_{k-j}
+       +(-1)^{k-1}kc_k.
+\]
+The latter formula shows inductively that every $s_k$ is an integer.
+The first examples are
+$s_2=r^2-2c_2$ and $s_3=r^3-3rc_2+3c_3$.
+
+In all series below, the formal variable $x$ records \emph{complex} degree:
+$x^j$ represents a cohomology class of real degree $2j$.
+Calculations are truncated after $x^n$.
+
+\subsection{The Todd class}
+With Bernoulli numbers defined by $z/(e^z-1)=\sum B_jz^j/j!$,
+\begin{equation}\label{eq:logTodd}
+ \log\td(T_X)=\frac{rx}{2}
+ -\sum_{2j\le n}\frac{B_{2j}s_{2j}}{2j(2j)!}x^{2j}.
+\end{equation}
+Only even Bernoulli numbers are used. For example, through degree eight,
+\[
+ \log\td=\frac{rx}{2}-\frac{s_2x^2}{24}
+ +\frac{s_4x^4}{2880}-\frac{s_6x^6}{181440}
+ +\frac{s_8x^8}{9676800}.
+\]
+These coefficients come from summing
+$\log(\alpha/(1-e^{-\alpha}))$ over the formal roots.
+
+We shall use the following recurrences for truncated power series. If
+$A(x)=1+\sum_{j\ge1}a_jx^j$ and $\log A(x)=\sum_{j\ge1}b_jx^j$, then
+\begin{equation}\label{eq:logrec}
+ b_j=a_j-\frac1j\sum_{k=1}^{j-1}k b_k a_{j-k}.
+\end{equation}
+If $A(x)=\exp B(x)$, the converse is
+\begin{equation}\label{eq:exprec}
+ a_0=1,\qquad a_j=\frac1j\sum_{k=1}^j k b_k a_{j-k}.
+\end{equation}
+Both follow from $A'=B'A$. Products are computed by the usual finite
+convolution $[x^j](UV)=\sum_{k=0}^ju_kv_{j-k}$.
+In particular, all these operations take place over $\Q$.
+
+\subsection{Exterior powers of the cotangent bundle}
+If $\td(T_X)=\sum_{j=0}^n\td_jx^j$, Riemann--Roch is
+\begin{equation}\label{eq:recoverTodd}
+ P(t)=[x^n]e^{tx}\td(T_X),\qquad
+ \td_j=(n-j)![t^{n-j}]P(t).
+\end{equation}
+The Chern character of the cotangent bundle is
+\[
+ U(x)=\ch(\Omega_X^1)=\sum_{j=0}^n\frac{(-1)^js_j}{j!}x^j.
+\]
+Writing $U_p(x)=\ch(\Lambda^p\Omega_X^1)$, with $U_0=1$, Newton's
+exterior-power identity is
+\begin{equation}\label{eq:exterior}
+ p U_p(x)=\sum_{a=1}^p(-1)^{a-1}U_{p-a}(x)\,U(ax).
+\end{equation}
+Indeed, the roots of the exterior-power generating function are
+$e^{-\alpha_1},\ldots,e^{-\alpha_n}$; their $a$th power sum is $U(ax)$.
+For example, $U_2=(U(x)^2-U(2x))/2$.
+Finally,
+\begin{equation}\label{eq:HRRexterior}
+ [x^n]U_p(x)\td(T_X)=\chi(X,\Omega_X^p)=(-1)^p.
+\end{equation}
+We will use these recurrences to express the Riemann--Roch identities
+as polynomial equations in the Chern power sums.
+
+\section{The Hilbert series and the signature}\label{sec:hilbert}
+
+\subsection{Reciprocity of the Hilbert numerator}
+Put $H(z)=\sum_{k\ge0}P(k)z^k$. Finite differences of a degree-$n$
+polynomial show that
+\[
+ H(z)=\frac{h(z)}{(1-z)^{n+1}},\qquad h(z)\in\Z[z],\quad\deg h\le n.
+\]
+For example, the coefficient of $z^j$, $j\ge n+1$, in
+$(1-z)^{n+1}H(z)$ is the $(n+1)$st difference of $P$, and is zero.
+We have $h(0)=P(0)=1$. The leading coefficient $1/n!$ of $P$ gives
+$h(1)=1$ by comparison of the leading pole at $z=1$.
+
+The rational generating function of a polynomial satisfies
+\[
+ H(z^{-1})=-\sum_{k\ge1}P(-k)z^k.
+\]
+The equality means expansion of the rational function on the left at zero.
+It follows first for $P(t)=1$ from
+$(1-z^{-1})^{-1}=-z/(1-z)$; applying $z\,d/dz$ proves it for monomials,
+and hence for every polynomial. Using \eqref{eq:kodaira} and
+\eqref{eq:SerreP} on the right gives
+\[
+ H(z^{-1})=(-1)^{n+1}z^rH(z).
+\]
+Substituting the rational form of $H$ and cancelling the denominators yields
+\begin{equation}\label{eq:reciprocal}
+ h(z)=z^{n+1-r}h(z^{-1}).
+\end{equation}
+Since $h(0)=1$, the degree is exactly $n+1-r$, its leading coefficient is
+one, and its coefficients are symmetric.
+By \eqref{eq:parity}, write $n+1-r=2s$.
+
+Let $v_i=h^0(X,L^i)$, with $v_0=1$, and $h(z)=\sum_{j=0}^{2s}h_jz^j$.
+Coefficient comparison gives
+\begin{align}
+ h_i&=v_i-\sum_{j=0}^{i-1}h_j\binom{n+i-j}{n}\quad(0\le i<s),\label{eq:hrec}\\
+ h_s&=1-2\sum_{j=0}^{s-1}h_j,\qquad h_{2s-j}=h_j.\nonumber
+\end{align}
+Thus only $v_1,\ldots,v_{s-1}$ are free parameters.
+We make no assertion that the coefficients $h_j$ are nonnegative:
+$L$ need not generate its section ring in degree one.
+
+\subsection{Recovering the Todd class}
+The following identity holds modulo $x^{n+1}$:
+\begin{equation}\label{eq:Todd-h}
+ \td(T_X)=\left(\frac{x}{1-e^{-x}}\right)^{n+1}h(e^{-x}).
+\end{equation}
+The binomial coefficient identity follows by a formal residue calculation.
+For any integer $j$,
+\[
+ [x^n]e^{(t-j)x}\left(\frac{x}{1-e^{-x}}\right)^{n+1}
+ =\Res_{x=0}\frac{e^{(t-j)x}\,dx}{(1-e^{-x})^{n+1}}.
+\]
+Put $z=1-e^{-x}$, so $dx=dz/(1-z)$. The residue becomes
+$[z^n](1-z)^{-(t-j+1)}=\binom{t+n-j}{n}$.
+Multiplication by $h_j$ and summation gives exactly the Hilbert polynomial.
+Since \eqref{eq:recoverTodd} recovers each coefficient separately, the
+truncated classes are equal.
+
+\subsection{The signature formula}
+Set
+\[
+ q(x)=\frac{x}{2\sinh(x/2)},\qquad B(x)=e^{sx}h(e^{-x}).
+\]
+Reciprocity makes $B$ even, and \eqref{eq:Todd-h} gives
+\[
+ \Ahat(T_X)=e^{-rx/2}\td(T_X)=q(x)^{n+1}B(x).
+\]
+This is an identity of rational characteristic classes; it requires no
+spin structure. The characteristic power series obey
+\[
+ \frac{q(2x)^2}{q(4x)}=\frac{x}{\tanh x}.
+\]
+Consequently, root by root and then by multiplication, the Hirzebruch
+$L$-class is
+\[
+ \mathcal L(T_X)=\left(\frac{x}{\tanh x}\right)^{n+1}
+                 \frac{B(2x)^2}{B(4x)}.
+\]
+The factors $e^{2sx}$ and $e^{4sx}$ cancel in this quotient. Taking the
+top coefficient and making the formal change of variable $t=\tanh x$
+gives
+\begin{equation}\label{eq:signature-h}
+ \sgn(X)=[t^n]\frac{
+ h\!\left(\frac{1-t}{1+t}\right)^2}{
+ (1-t^2)h\!\left(\left(\frac{1-t}{1+t}\right)^2\right)}.
+\end{equation}
+Indeed, the coefficient is initially the residue of
+$h(e^{-2x})^2\,dx/(\tanh(x)^{n+1}h(e^{-4x}))$.
+Now $dx=dt/(1-t^2)$ and $e^{-2x}=(1-t)/(1+t)$.
+
+To express this in terms of polynomials, put $d=2s$ and define
+\begin{align}
+ N(t)&=\sum_{j=0}^d h_j(1-t)^j(1+t)^{d-j},\label{eq:ND}\\
+ D(t)&=(1-t^2)\sum_{j=0}^d h_j(1-t)^{2j}(1+t)^{2d-2j}.\nonumber
+\end{align}
+Both are even, and $N(0)=D(0)=1$. Thus, in even complex dimension,
+\begin{equation}\label{eq:sigmaND}
+ [t^n]\frac{N(t)^2}{D(t)}=1.
+\end{equation}
+If $D(t)=1+\sum_{j\ge1}d_jt^{2j}$ and
+$N(t)^2=\sum_{j\ge0}b_jt^{2j}$, set
+\begin{equation}\label{eq:division}
+ a_0=b_0=1,\qquad a_j=b_j-\sum_{i=1}^j d_i a_{j-i}.
+\end{equation}
+Then \eqref{eq:sigmaND} is $a_{n/2}=1$. Every coefficient in this recurrence
+is an integer polynomial in the section counts.
+
+\subsection{Reduction modulo an integer}
+Let $F\in\Z[y]$. If $F$ has an integer root, its reduction modulo
+any positive integer $q$ has a root in $\Z/q\Z$. We shall use the
+contrapositive: a modulus for which the reduction has no root excludes
+all integer roots of $F$. When the coefficients depend on a bounded
+integer tuple $\boldsymbol v$, we may choose a different modulus for
+each specialization $F_{\boldsymbol v}$.
+
+We first clear denominators and divide out the greatest common divisor
+of the coefficients over $\Q$, then reduce the resulting integer
+polynomial modulo $q$. These operations preserve its rational zero set.
+In particular, a prime dividing a denominator in the derivation may
+still be used to exclude integer roots of the resulting polynomial.
+
+\section{Dimension seven}\label{sec:C7}
+
+\subsection{The possible indices}
+In this section only, write the Chern coefficients as
+\[
+ (c_1,c_2,c_3,c_4,c_5,c_6,c_7)=(r,a,b,c,d,e,f).
+\]
+In particular, $b=c_3$; the power sum $s_3$ retains the notation of
+Section \ref{sec:formal}.
+Equations \eqref{eq:cn}--\eqref{eq:parity} become
+\[
+ f=8,\qquad re=224,\qquad 1\le r\le8,\qquad r\text{ even}.
+\]
+Among $2,4,6,8$, the value $6$ does not divide $224$. Hence
+\begin{equation}\label{eq:C7indices}
+ r\in\{2,4,8\}.
+\end{equation}
+The value $8$ gives $\PP^7$ by Lemma \ref{lem:equality}.
+It remains to exclude $4$ and $2$.
+
+\subsection{The Chern-number equations}
+Apply the recurrences of Section \ref{sec:formal}, substituting $e=224/r$
+and $f=8$. Let
+\[
+ \rho_0=\chi(\OO_X)-1,\quad
+ \rho_1=\chi(\Omega_X^1)+1,\quad
+ \rho_2=\chi(\Omega_X^2)-1.
+\]
+The resulting identities are
+\[
+ E_1=-7200\rho_0+1440\rho_1,\qquad
+ E_2=-120960\rho_0,\qquad
+ \rho_2=-6\rho_0+3\rho_1,
+\]
+where
+\begin{align}
+ E_1={}&r^3c-3rac-r^2d+3bc-3ad+7728,\label{eq:C7E1}\\
+ E_2={}&-2r^5a+10r^3a^2+2r^4b-10ra^3-11r^2ab\nonumber\\
+       &-2r^3c+rb^2+9rac+2r^2d+120512.\label{eq:C7E2}
+\end{align}
+Under the substitutions $e=224/r$ and $f=8$, the three
+Euler-characteristic identities are therefore equivalent to
+$E_1=E_2=0$.
+
+For use in the elimination, the Hilbert polynomial is
+\begin{align}
+60480P(t)={}&12t^7+42rt^6+42(r^2+a)t^5+105rat^4\nonumber\\
+ &+14(-r^4+4r^2a+3a^2+rb-c)t^3\nonumber\\
+ &+21(-r^3a+3ra^2+r^2b-rc)t^2\nonumber\\
+ &+\bigl(2r^6-12r^4a+11r^2a^2+5r^3b+10a^3\nonumber\\
+ &\qquad+11rab-5r^2c-b^2-9ac-2rd+2e\bigr)t+60480.
+ \label{eq:C7P}
+\end{align}
+The constant term uses $\rho_0=0$. The remaining coefficients follow
+from \eqref{eq:logTodd}, \eqref{eq:exprec}, and
+\eqref{eq:recoverTodd}, truncated in degree seven. For example, the coefficient
+of $t^5$ is $\td_2/5!=(r^2+a)/(12\cdot5!)$,
+which is $42(r^2+a)/60480$ as displayed.
+
+\subsection{The case \texorpdfstring{$r=4$}{r=4}}
+Set $r=4$, $e=56$, and $m=P(1)$. The coefficient of $d$ in $E_2$
+is $2r^2=32$, so solve $E_2=0$ uniquely for $d$.
+Substitution in \eqref{eq:C7P} gives
+\[
+ P(-1)=-\frac{3a^2-41a+4b-c-598}{1440},\qquad
+ P(1)=\frac{3a^2-17a+4b-c+458}{288}.
+\]
+Kodaira vanishing gives $P(-1)=0$. Subtract the corresponding numerators:
+$288m=24a+1056$, hence
+\[
+ a=12m-44,\qquad
+ c=4b+432m^2-3660m+7014.
+\]
+The solved equation for $d$ becomes
+\[
+ 8d=-b^2+96bm-352b-29376m^3
+       +367056m^2-1451928m+1787736.
+\]
+Substituting these expressions in $2E_1=0$ gives
+\begin{align}
+ F_4(m,b)={}&(9m-5)b^2+(1728m^2-17160m+36612)b\nonumber\\
+ &+264384m^4-4279824m^3+25277544m^2\nonumber\\
+ &-64549008m+60164376=0.\label{eq:C7F4}
+\end{align}
+Only nonzero constants have been divided out in these substitutions.
+
+Reduce all coefficients modulo nine:
+\[
+ F_4(m,b)\equiv4b^2+3bm+6\pmod9.
+\]
+Reducing further modulo three forces $b^2\equiv0\pmod3$, so $3\mid b$.
+Then both $4b^2$ and $3bm$ are divisible by nine, while $6$ is not.
+This contradiction excludes $r=4$, for every integer $m$ without any bound.
+
+\subsection{The case \texorpdfstring{$r=2$}{r=2}}
+Now $r=2$ and $e=112$. Set $m=P(1)$ and $k=P(2)$.
+Equation \eqref{eq:sectionbound} gives
+\begin{equation}\label{eq:C7bounds}
+ 0\le m\le8,\qquad 0\le k\le 2^7+7=135.
+\end{equation}
+Again solve $E_2=0$ for $d$, this time dividing by the nonzero constant $8$.
+The two evaluations of $P$ reduce to
+\[
+ P(1)=\frac{3a^2+a+2b-c+1442}{720},\qquad
+ P(2)=\frac{3a^2+16a+2b-c+572}{180}.
+\]
+Thus $180k-720m=15a-870$. Put $u=k-4m$; then
+\begin{align*}
+ a&=12u+58,\\
+ c&=2b+432u^2+4188u+11592-720m,\\
+ 4d&=-b^2+48bu+232b+77760mu+370080m\\
+    &\quad-29376u^3-429552u^2-2248824u-4200128.
+\end{align*}
+With these substitutions, $2E_1=0$ becomes
+\begin{equation}\label{eq:C7quad}
+ A b^2+B b+C=0,
+\end{equation}
+where
+\begin{align*}
+ A&=18u+101,\\
+ B&=1728u^2+16392u+47544-4320m,\\
+ C&=528768u^4+10284192u^3+77812128u^2\\
+  &\quad+271230552u+365944288\\
+  &\quad-m(1399680u^2+13478400u+32447520).
+\end{align*}
+The integer $A$ cannot vanish, since $101$ is not divisible by $18$.
+An integral root $b$ would give the identity
+\begin{equation}\label{eq:disc}
+ B^2-4AC=(2Ab+B)^2.
+\end{equation}
+Therefore the discriminant must be a nonnegative integer square.
+
+The rectangle \eqref{eq:C7bounds} contains $9\cdot136=1224$ pairs.
+Computing $u,A,B,C$ and $D=B^2-4AC$ for each pair gives
+\[
+\begin{array}{c|rrrrrrrrr|r}
+m&0&1&2&3&4&5&6&7&8&\text{total}\\ \hline
+D\ge0&0&0&4&7&12&16&20&25&30&114\\
+D\text{ square}&0&0&0&0&0&0&0&0&0&0
+\end{array}
+\]
+For each nonnegative discriminant, we compute the integer
+$\lfloor\sqrt D\rfloor$ and compare its square with $D$.
+Alternatively, requiring the $114$ nonnegative discriminants to be
+quadratic residues successively modulo $5,7,11,13,17,19,23,29$ leaves
+$90,60,33,23,16,8,3,0$ pairs. Either calculation excludes every pair
+in \eqref{eq:C7bounds}.
+
+Both nonmaximal indices in \eqref{eq:C7indices} are excluded.
+The remaining value $r=8$ gives $X\simeq\PP^7$ by Lemma \ref{lem:equality}.
+This proves $C_7$.
+
+\section{Dimension eight}\label{sec:C8}
+
+\subsection{The possible indices}
+Now $c_8=9$ and $r c_7=324$. Bounds and parity give the candidates
+$1,3,5,7,9$; divisibility by $324$ removes $5,7$. Hence
+\begin{equation}\label{eq:C8indices}
+ r\in\{1,3,9\}.
+\end{equation}
+The value $9$ gives $\PP^8$ by Lemma \ref{lem:equality}.
+
+\subsection{The Hilbert polynomial}
+Since $n$ is even, \eqref{eq:SerreP} says $P(t)=P(-r-t)$.
+Put $y=t+r/2$. Invariance under $y\mapsto-y$ means that $P$ is a polynomial
+in $y^2$, equivalently in $z=t(t+r)=y^2-r^2/4$.
+The leading coefficient and $P(0)=1$ give
+\begin{equation}\label{eq:C8P}
+ P(t)=\frac{z^4+A z^3+B z^2+Cz+40320}{40320},
+ \qquad z=t(t+r).
+\end{equation}
+The letters $A,B,C$ in this section denote Hilbert-polynomial coefficients.
+
+Set $m=P(1)$, $k=P(2)$, $\ell=P(3)$. The bounds needed are
+\begin{equation}\label{eq:C8bounds}
+ 0\le m\le9,\qquad 0\le k\le2^8+8=264.
+\end{equation}
+For $r=3$ the values of $z$ at $t=-1,1,2$ are $-2,4,10$.
+The three equations for $A,B,C$ are therefore
+\[
+\begin{aligned}
+ -8A+4B-2C&=-40336,\\
+ 64A+16B+4C&=40320m-40576,\\
+ 1000A+100B+10C&=40320k-50320.
+\end{aligned}
+\]
+Their coefficient matrix is invertible, as is also clear from polynomial
+interpolation at three distinct nonzero values of $z$. Solving gives
+\begin{equation}\label{eq:C8abc3}
+\begin{aligned}
+ A&=56k-280m+492,\\
+ B&=-112k+2240m-6036,\\
+ C&=-448k+5600m+6128.
+\end{aligned}
+\end{equation}
+For $r=1$, the values of $z$ at $t=1,2,3$ are $2,6,12$.
+The equations are
+\[
+ 8A+4B+2C=40320m-40336,\quad
+ 216A+36B+6C=40320k-41616,
+\]
+\[
+ 1728A+144B+12C=40320\ell-61056.
+\]
+Their solution is
+\begin{equation}\label{eq:C8abc1}
+\begin{aligned}
+ A&=-280k+56\ell+504m-300,\\
+ B&=3920k-448\ell-9072m+5708,\\
+ C&=-6720k+672\ell+36288m-30384.
+\end{aligned}
+\end{equation}
+
+\subsection{The signature equation}
+In dimension eight we can write the signature in terms of the four
+coefficients of the $\widehat A$-class. By \eqref{eq:recoverTodd},
+$\td_j=(8-j)![t^{8-j}]P(t)$. Write
+\[
+ e^{-rx/2}\sum_{j=0}^8\td_jx^j
+ =1+Ux^2+Vx^4+Wx^6+Zx^8.
+\]
+The odd coefficients vanish, either by \eqref{eq:SerreP} or by the
+Todd power-series identity. The logarithm has coefficients
+\begin{align*}
+ q_1&=U,\\
+ q_2&=V-U^2/2,\\
+ q_3&=W-UV+U^3/3,\\
+ q_4&=Z-UW-V^2/2+U^2V-U^4/4.
+\end{align*}
+The conversion to the logarithm of the $L$-class is:
+\[
+\begin{array}{c|c|c|c}
+ &\log\Ahat\text{ coefficient of }s_{2j}
+ &\log\mathcal L\text{ coefficient of }s_{2j}&\text{ratio}\\ \hline
+j=1&-1/24&1/3&-8\\
+j=2&1/2880&-7/90&-224\\
+j=3&-1/181440&62/2835&-3968\\
+j=4&1/9676800&-127/18900&-65024
+\end{array}
+\]
+Each entry follows by expanding $\log(x/(2\sinh(x/2)))$ or
+$\log(x/\tanh x)$ and summing over roots.
+Set $(\lambda_1,\lambda_2,\lambda_3,\lambda_4)
+=(-8q_1,-224q_2,-3968q_3,-65024q_4)$.
+Exponentiating and extracting degree eight gives
+\begin{equation}\label{eq:C8sigma}
+ \sgn(X)=\lambda_4+\lambda_1\lambda_3+\frac{\lambda_2^2}{2}
+              +\frac{\lambda_1^2\lambda_2}{2}+\frac{\lambda_1^4}{24}.
+\end{equation}
+By \eqref{eq:signatureone}, this number must be $1$.
+
+\subsection{The case \texorpdfstring{$r=3$}{r=3}}
+Substitute \eqref{eq:C8abc3} into \eqref{eq:C8P} and then into
+\eqref{eq:C8sigma}. Set $u=k-5m$. We obtain the polynomial identity
+$\sgn(X)-1=32F_3(m,u)$, where
+\begin{align}
+ F_3(m,u)={}&1152u^4+40920u^3+(557147-4032m)u^2\nonumber\\
+ &+(3443306-71232m)u+1800m^2-325410m+8148917.
+ \label{eq:C8F3}
+\end{align}
+Thus $F_3(m,u)=0$ for an integer $u$ and $m=0,\ldots,9$.
+For each value of $m$, a modulus excluding every residue of $u$ is:
+\[
+\begin{array}{c|rrrrrrrrrr}
+m&0&1&2&3&4&5&6&7&8&9\\ \hline
+q&11&11&7&7&11&7&7&19&11&7
+\end{array}
+\]
+For each entry, $F_3(m,u)$ is nonzero modulo $q$ for
+$u=0,\ldots,q-1$. Hence there is no integer root for any of the
+allowed values of $m$, and $r=3$ is impossible. The argument uses
+no bound on $u$ or $k$.
+
+\subsection{The case \texorpdfstring{$r=1$}{r=1}}
+For \eqref{eq:C8abc1}, set $u=\ell-5k+9m$ and $v=k-3m$.
+The same calculation now gives $\sgn(X)-1=32F_1(m,k,u)$, where
+\begin{align}
+ F_1(m,k,u)={}&1152u^4-23592u^3+173099u^2-537930u+596995\nonumber\\
+ &+1800v^2+(-4032u^2+41664u-100434)v\nonumber\\
+ &+(3024u-16000)m,\qquad v=k-3m.\label{eq:C8F1}
+\end{align}
+The two bounds in \eqref{eq:C8bounds} give $10\cdot265=2650$ pairs $(m,k)$.
+For each pair, treat \eqref{eq:C8F1} as a polynomial in the unrestricted
+integer $u$. The successive congruence tests give the following counts:
+\[
+\begin{array}{r|r@{\qquad}r|r}
+q&\text{remaining pairs}&q&\text{remaining pairs}\\ \hline
+\text{initial}&2650&13&39\\
+4&1325&17&25\\
+9&662&19&14\\
+16&332&23&8\\
+25&160&29&3\\
+27&148&31&2\\
+49&80&37&1\\
+11&64&43&0
+\end{array}
+\]
+The moduli are applied down the left column and then down the right.
+As explained in Section \ref{sec:hilbert}, an integer root must also
+give a root modulo each composite modulus. No pairs remain, so $r=1$
+is impossible for every integer $\ell$.
+Equation \eqref{eq:C8indices} leaves $r=9$, and Lemma \ref{lem:equality}
+gives $X\simeq\PP^8$. This proves $C_8$.
+
+\section{Dimension nine}\label{sec:C9}
+The basic restrictions give $r\mid450$, $r$ even, and $r\le10$.
+Thus $r=2,6,10$. The value $10$ gives projective space.
+The value $6$ is excluded in Section \ref{sec:higharith} by direct
+characteristic-number equations; that argument does not assume $C_9$.
+We treat $r=2$ here.
+
+\subsection{Section dimensions and even power sums}
+Set $m=h^0(L)$, $k=h^0(2L)$, and $\ell=h^0(3L)$.
+Lemma \ref{lem:equality} excludes $m=10$ in the present index, so
+\begin{equation}\label{eq:C9bounds}
+ 0\le m\le9,\quad 0\le k\le 2^9+9=521,\quad
+ 0\le\ell\le3^9+9=19692.
+\end{equation}
+Since $n+1-r=8$, the first half of $h(z)$ is
+\[
+ h_0=1,\quad h_1=m-10,\quad h_2=k-10m+45,\quad
+ h_3=\ell-10k+45m-120.
+\]
+Set $h_4=1-2(h_0+h_1+h_2+h_3)$ and reflect the coefficients.
+
+In this section put
+\[
+ u=s_2,\quad v=s_4,\quad w=s_6,\quad a=s_3,\quad b=s_5.
+\]
+Thus the letters $a,b$ in this section denote odd Chern power sums. Let $B(x)=e^{4x}h(e^{-x})$. If
+\[
+ T=\ell-6k+14m-14,\quad Q=\ell+6k-34m+46,\quad
+ J=\ell+54k+134m-434,
+\]
+direct expansion of the paired exponentials gives
+\[
+ [x^2]B=T,\qquad [x^4]B=Q/12,\qquad [x^6]B=J/360.
+\]
+For example, $B=2\cosh4x+2h_1\cosh3x+2h_2\cosh2x
++2h_3\cosh x+h_4$, so its degree-two coefficient is
+$16+9h_1+4h_2+h_3=T$.
+
+Since $\log\Ahat=10\log q+\log B$, formula \eqref{eq:logrec} gives
+\begin{equation}\label{eq:C9powers}
+\begin{aligned}
+ u&=10-24T,\\
+ v&=10+240Q-1440T^2,\\
+ w&=10-504J+15120TQ-60480T^3.
+\end{aligned}
+\end{equation}
+For instance, $[x^4]\log B=Q/12-T^2/2$, and the coefficient of
+$s_4$ in $\log q$ is $1/2880$.
+
+\subsection{Elimination of the odd power sums}
+Start from
+\[
+ (s_0,\ldots,s_9)=(9,2,u,a,v,b,w,s_7,s_8,s_9).
+\]
+The equation $[x^9]\td=1$ is linear in $s_8$ with coefficient
+$1/9676800$, hence has the unique solution
+\begin{equation}\label{eq:s8nine}
+\begin{aligned}
+s_8={}&-\frac{175}{144}u^4+\frac{175}{9}u^3-\frac{35}{12}u^2v-70u^2\\
+ &+\frac{70}{3}uv-\frac{20}{9}uw+80u-\frac7{12}v^2\\
+ &-28v+\frac{80}{9}w+\frac{29030320}{3}.
+\end{aligned}
+\end{equation}
+Indeed, $s_8x^8/9676800$
+in $\log\td$ multiplies the degree-one term $x$ of $\td$.
+
+Newton's identities now compute $c_8$ and $c_9$. They must be
+\[
+ c_8=\frac{9\cdot10^2}{2\cdot2}=225,\qquad c_9=10.
+\]
+The coefficient of $s_7$ in $c_8$ is $s_1/7=2/7$.
+Thus, if $c_8^{(0)}$ denotes the Newton expression with $s_7=0$,
+\[
+ s_7=\frac72(225-c_8^{(0)}).
+\]
+After this substitution the coefficient of $s_9$ in $c_9$ is $1/9$,
+so, with the analogous notation, $s_9=9(10-c_9^{(0)})$.
+These are linear eliminations with nonzero constant coefficients.
+They are therefore valid for every choice of $u,v,w,a,b$.
+
+Impose \eqref{eq:HRRexterior} for $p=1,2$. Clearing denominators and
+coefficient gcds gives two integer polynomials
+\[
+ E_1(u,v,w,a,b)=0,\qquad E_2(u,v,w,a,b)=0.
+\]
+Each has degree one in $b$. Write $E_i=L_i b+C_i$. Their resultant is
+$L_1C_2-L_2C_1$. Any common solution makes this expression zero, even if
+one or both coefficients $L_i$ vanish. No division by $L_i$ is needed.
+
+Remove the resultant's nonzero coefficient gcd. The resulting polynomial
+$F(u,v,w,a)$ has 60 monomials and degree four in $a$:
+\begin{equation}\label{eq:C9quartic}
+ F(u,v,w,a)=\sum_{i=0}^4 A_i(u,v,w)a^i,\qquad
+ A_4=3840u-63488.
+\end{equation}
+The equations $E_1,E_2$ and the five coefficients $A_i$ are given in
+Appendix \ref{app:c9poly}. After substituting \eqref{eq:C9powers},
+the integer $a=s_3$ must satisfy \eqref{eq:C9quartic}.
+
+\subsection{The congruence calculation}
+The rectangle \eqref{eq:C9bounds} contains
+$10\cdot522\cdot19693=102797460$ triples.
+For each triple, the integer polynomial in $a$ must have a root modulo
+every prime. Test the primes from $13$ through $223$:
+\[
+\begin{array}{r|r}
+ \text{primes tested through}&\text{remaining triples}\\ \hline
+23&20583262\\97&16021\\149&136\\181&3\\223&0
+\end{array}
+\]
+Appendix \ref{app:sievetables} contains every intermediate count.
+The representation of the candidate set used for this calculation is
+described in Section \ref{sec:python}.
+The empty final set excludes $r=2$. Only $r=10$ remains, proving $C_9$.
+
+\section{Dimension ten}\label{sec:C10}
+Here $r\mid605$, $r$ is odd, and $r\le11$. The three possibilities are
+$r=1,5,11$. Section \ref{sec:even6} excludes $r=5$ by a signature
+calculation independent of the present argument. The value $11$ gives
+projective space. It remains to exclude $r=1$.
+
+\subsection{The signature polynomial}
+Put $m=h^0(L)$, $k=h^0(2L)$, $\ell=h^0(3L)$, and $j=h^0(4L)$.
+Now $h$ has degree ten, with
+\begin{align*}
+ h_0&=1,&h_1&=m-11,\\
+ h_2&=k-11m+55,&h_3&=\ell-11k+55m-165,\\
+ h_4&=j-11\ell+55k-165m+330.
+\end{align*}
+Its central coefficient and its reflected coefficients are given by
+\eqref{eq:hrec}. Formula \eqref{eq:division} gives
+\begin{equation}\label{eq:C10F}
+ \sgn(X)-1=8F_{10,1}(m,k,\ell,j),
+\end{equation}
+where $F_{10,1}$ is a primitive integer polynomial with 126 monomials
+and degree five in $j$. Its leading coefficient in $j$ is $-73728$.
+
+The polynomial can be expressed more briefly in terms of the following
+linear combinations:
+\begin{align*}
+ T&=j-7\ell+20k-28m+14,\\
+ Q&=j+5\ell-40k+80m-46,\\
+ J&=j+53\ell+80k-568m+434,\\
+ V&=j+245\ell+3800k+7280m-11326.
+\end{align*}
+They are respectively $[x^2]B$, $12[x^4]B$, $360[x^6]B$,
+and $20160[x^8]B$ for $B(x)=e^{5x}h(e^{-x})$.
+Let
+\begin{align}
+G(T,Q,J,V)={}&-23224320T^5+5322240T^4-532224T^3\nonumber\\
+ &+30162T^2+12151T-41207040\nonumber\\
+ &+8709120QT^3-1552320QT^2+110880QT-22533Q\nonumber\\
+ &-655200Q^2T+57750Q^2\nonumber\\
+ &-233856JT^2+38808JT+3654J+17640JQ\nonumber\\
+ &+3060TV-1147V.\label{eq:C10compact}
+\end{align}
+Then
+\begin{equation}\label{eq:C10division}
+ F_{10,1}(m,k,\ell,j)=\frac{G(T,Q,J,V)}{315}.
+\end{equation}
+After the displayed linear substitutions, all coefficients of $G$ are
+divisible by $315$. The resulting integer polynomial agrees with that
+obtained from \eqref{eq:division}, and also with the expression
+recovered from the Todd class. Both identities are checked by the
+verification program.
+
+The congruence tests are applied to $F_{10,1}$. The division by $315$
+is performed coefficientwise over $\Q$ before reduction modulo a prime,
+as in Section \ref{sec:hilbert}.
+
+\subsection{The congruence calculation}
+The bounds required for the first three section counts are
+\[
+ 0\le m\le10,\qquad0\le k\le2^{10}+10=1034,\qquad
+ 0\le\ell\le3^{10}+10=59059.
+\]
+The value $m=11$ has been removed by Lemma \ref{lem:equality}.
+No bound on $j$ is needed, since an integer root gives a root modulo
+every prime.
+
+There are $11\cdot1035\cdot59060=672398100$ triples. The congruence tests give
+\[
+\begin{array}{r|r}
+ \text{primes tested through}&\text{remaining triples}\\ \hline
+31&8661101\\97&14926\\149&148\\181&7\\239&0.
+\end{array}
+\]
+Thus $F_{10,1}$ has no integer root in $j$ for any allowed triple
+$(m,k,\ell)$.
+This excludes $r=1$, and only $r=11$ remains. Hence $X\simeq\PP^{10}$.
+
+\section{The index bound \texorpdfstring{$r\ge n-3$}{r >=  n-3}}\label{sec:high}
+
+\subsection{The possible dimensions}
+Put $c=n+1-r$, an even nonnegative integer. Substituting $n=r+c-1$ gives
+\[
+ \frac{n(n+1)^2}{2}-\frac{c^2(c-1)}2
+ =\frac r2\bigl(r^2+(3c-1)r+3c^2-2c\bigr).
+\]
+The bracket is even: $r^2+(3c-1)r$ is even because $3c-1$ is odd,
+and $3c^2-2c$ is even. Equation \eqref{eq:rcn} therefore implies
+\begin{equation}\label{eq:fixedc}
+ r\mid\frac{c^2(c-1)}2.
+\end{equation}
+For $r\ge n-3$, parity leaves $r=n+1,n-1,n-3$.
+The first gives projective space.
+For $r=n-1$, $c=2$ and \eqref{eq:fixedc} gives $r\mid2$,
+hence $n=2,3$, covered by the established low-dimensional result.
+For $r=n-3$, $c=4$ and $r\mid24$, so the full list is
+\begin{equation}\label{eq:highpairs}
+ (n,r)=(4,1),(5,2),(6,3),(7,4),(9,6),(11,8),(15,12),(27,24).
+\end{equation}
+The first three are again covered by $n\le6$.
+We first exclude dimensions $7,9,11$ by Riemann--Roch, then treat
+$15,27$ using the geometry of a curve section.
+
+\subsection{Dimensions seven, nine, and eleven}\label{sec:higharith}
+Let $m=h^0(L)$, with $0\le m\le n$, and $r=n-3$.
+The Kodaira roots divide $P(t)$:
+\[
+ P(t)=\frac{\prod_{j=1}^{r-1}(t+j)}{n!}
+       \bigl(z^2+\alpha z+\beta\bigr),\qquad z=t(t+r).
+\]
+To justify the shape, the quotient has degree four. Under $t\mapsto-r-t$
+both $P$ and the product of roots pick up the same sign because
+$n-(r-1)=4$ is even. The quotient is invariant, so it is a quadratic
+polynomial in $z$; its leading coefficient is one.
+The conditions $P(0)=1$, $P(1)=m$ give
+\begin{equation}\label{eq:highP}
+ \beta=r(r+1)(r+2)(r+3),\qquad
+ \alpha=(r+2)(r+3)(m-r)-(r+1).
+\end{equation}
+For example, the product at $t=1$ is $r!$ and $z=r+1$;
+substitution verifies the second formula directly.
+
+Recover all Todd coefficients by \eqref{eq:recoverTodd}, form
+$e^{-rx/2}\td$, and take its logarithm. Dividing the coefficient of $x^{2j}$
+by $-B_{2j}/(2j(2j)!)$ determines $s_{2j}$.
+Set $s_1=r$ and temporarily leave $s_3,s_5,\ldots,s_n$ unknown.
+
+The coefficient of $s_{n-2}$ in $c_{n-1}$ is $r/(n-2)$.
+Indeed, the generating identity
+\[
+ c(t)=\exp\left(\sum_{j\ge1}(-1)^{j-1}s_jt^j/j\right)
+\]
+gives $\partial c_{n-1}/\partial s_{n-2}=c_1/(n-2)$ in these odd dimensions.
+Thus $c_{n-1}=n(n+1)^2/(2r)$ determines $s_{n-2}$ uniquely.
+Next, $c_n=n+1$ determines $s_n$ with coefficient $1/n$.
+The free odd variables left are
+\[
+ \begin{array}{c|c}
+ n&\text{remaining variables}\\ \hline
+ 7&s_3\\9&s_3,s_5\\11&s_3,s_5,s_7.
+ \end{array}
+\]
+Use \eqref{eq:exterior}--\eqref{eq:HRRexterior} for
+$p=1,\ldots,(n-5)/2$. This gives one, two, or three polynomial equations.
+
+We compute a Gr\"obner basis over $\Q$, ordering the remaining
+variables lexicographically from the largest subscript down to $s_3$.
+The basis contains
+a nonzero polynomial solely in $s_3$.
+After clearing denominators and a coefficient gcd, call it $E_{n,m}(s_3)$.
+In each case, division by this Gr\"obner basis gives remainder zero.
+Thus $E_{n,m}$ belongs to the rational ideal of the original equations
+and vanishes at every common solution.
+Consequently, the absence of integer roots of $E_{n,m}$ suffices to
+exclude the original system.
+
+For each $m$ the following table gives a prime modulo which $E_{n,m}$
+has no root:
+\[
+\begin{array}{c|c|c|l}
+ n&r&\deg E_{n,m}&\text{rootless primes, in order }m=0,\ldots,n\\ \hline
+7&4&2&7,5,11,7,13,7,5,7\\
+9&6&4&11,7,7,19,11,17,7,11,7,7\\
+11&8&9&13,7,23,13,7,7,11,29,7,17,11,7.
+\end{array}
+\]
+For instance,
+\[
+\begin{aligned}
+ E_{9,0}(a)={}&13a^4-1496718a^3+541796355a^2\\
+             &+87999724113156a+427746860206005240
+\end{aligned}
+\]
+has no root modulo eleven.
+For each of the $30$ polynomials, evaluation at every residue modulo
+the listed prime gives a nonzero value. This excludes all three pairs.
+The derivations, ideal-membership checks, and residue calculations
+are performed by the verification program; see Section \ref{sec:python}.
+
+\subsection{A Bernoulli-number congruence}
+For every case $r=n-3$, put $\delta=n+1-h^0(L)$.
+The reciprocal Hilbert numerator has degree four, and is forced to be
+\begin{equation}\label{eq:hfour}
+ h(z)=1-\delta z+(2\delta-1)z^2-\delta z^3+z^4.
+\end{equation}
+Its middle coefficient follows by evaluating $h(1)=1$.
+Thus
+\[
+ B_\delta(x)=e^{2x}h(e^{-x})
+ =2\cosh(2x)-2\delta\cosh x+2\delta-1.
+\]
+In $\log\Ahat=(n+1)\log q+\log B_\delta$, comparison of degree $2j$ gives
+\begin{equation}\label{eq:powerBernoulli}
+ s_{2j}=n+1-\frac{2j(2j)!}{B_{2j}}[x^{2j}]\log B_\delta(x).
+\end{equation}
+We apply this identity with $2j=12$, which is at most $n$ for the two
+remaining dimensions $15$ and $27$.
+
+Let $F(\delta)=12![x^{12}]\log B_\delta(x)$.
+The recurrence \eqref{eq:logrec} gives
+\begin{align*}
+F(\delta)=-2\bigl(&39916800\delta^6-938044800\delta^5
+                     +8944523280\delta^4\\
+ &-44218331520\delta^3+119360516286\delta^2\\
+ &-166654367087\delta+94009610240\bigr).
+\end{align*}
+Since $B_{12}=-691/2730$, equation \eqref{eq:powerBernoulli} says
+\[
+ s_{12}=n+1+\frac{32760}{691}F(\delta).
+\]
+The integer $32760$ is coprime to $691$. Integrality of $s_{12}$
+therefore forces $691\mid F(\delta)$.
+Modulo $691$ the polynomial factors as
+\[
+ F(\delta)\equiv
+ -297\delta(\delta-1)(\delta-2)
+ (\delta^3+325\delta^2-326\delta+237).
+\]
+Evaluation at the $691$ residues shows that the cubic has no root
+in $\mathbf F_{691}$. Hence
+$\delta\equiv0,1,2\pmod{691}$.
+But $0\le\delta\le n+1\le28$ in \eqref{eq:highpairs}, so
+\begin{equation}\label{eq:deltasmall}
+ \delta\in\{0,1,2\}.
+\end{equation}
+The case $\delta=0$ gives $h^0(L)=n+1$ and is already impossible for
+$r=n-3$ by Lemma \ref{lem:equality}. We treat $\delta=1,2$ by passing to a curve section.
+
+\subsection{A curve section of genus two}
+For $\delta=1,2$, we have $m=h^0(L)=n,n-1$.
+Lemma \ref{lem:base} permits $n-1$ general independent sections
+$s_1,\ldots,s_{n-1}$ to cut a proper complete intersection curve $C$.
+Its intersection cycle has $L$-degree $L^n=1$.
+Every irreducible component has positive integral degree, so there is a
+single component of multiplicity one. A complete intersection in the
+smooth $X$ is Cohen--Macaulay and has no embedded associated primes.
+Since it is generically reduced, it is reduced everywhere: a nonzero
+nilpotent submodule would have an associated prime, necessarily minimal,
+contradicting generic reducedness. Thus $C$ is integral and Gorenstein.
+
+Put $A=L|_C$. Adjunction for a local complete intersection gives
+\[
+ \omega_C=(K_X+(n-1)L)|_C=A^2,\qquad \deg A=1.
+\]
+Therefore $\deg\omega_C=2$ and $p_a(C)=2$.
+The following argument applies to this integral Gorenstein curve even
+when it is singular.
+
+To identify the section ring of the curve, let $R=\bigoplus_{k\ge0}H^0(X,L^k)$.
+For every integer $k$ and $0<i<n$, $H^i(X,L^k)=0$:
+Kodaira vanishing handles $k>-r$, and Serre duality reduces $k\le-r$
+to a nonnegative twist. The usual graded local-cohomology description
+of a full section ring then makes $R$ Cohen--Macaulay of dimension $n+1$.
+The $n-1$ sections have height $n-1$, so form a regular sequence.
+The quotient $\bar R=R/(s_1,\ldots,s_{n-1})$ has dimension and depth two.
+The exact comparison sequence with sections on $\Proj\bar R$ has kernel
+$H^0_{R_+}(\bar R)$ and cokernel $H^1_{R_+}(\bar R)$, both zero by that
+depth. Hence
+\begin{equation}\label{eq:curve-ring}
+ \bar R=\bigoplus_{k\ge0}H^0(C,A^k).
+\end{equation}
+Its degree-one dimension is
+\[
+ h^0(C,A)=m-(n-1)=
+ \begin{cases}1&\delta=1,\\0&\delta=2.\end{cases}
+\]
+
+\subsection{Section rings of genus-two curves}\label{sec:curvelemma}
+The presentations in Lemma \ref{lem:halfring} are those of
+\cite[Proposition 3.2]{fpr}. We include a proof for integral Gorenstein
+curves.
+
+\begin{lemma}\label{lem:canonical}
+For an integral Gorenstein curve $C$ of arithmetic genus two, $\omega_C$
+is globally generated. Its two sections define a finite flat map
+$f:C\to\PP^1$ of degree two, with $f^*\OO(1)=\omega_C$.
+\end{lemma}
+\begin{proof}
+Suppose a point $p$ were a base point, and let $I_p$ be its ideal.
+Then $h^0(\omega_C I_p)=2$ and $\chi(\omega_C I_p)=0$.
+Serre duality for the torsion-free sheaf $\omega_C I_p$ gives
+$h^0(\mathcal H om(I_p,\OO_C))=2$.
+
+If $p$ is smooth, the latter sheaf is $\OO_C(p)$.
+A nonconstant function with only a simple pole at $p$ defines a
+degree-one morphism $C\to\PP^1$, necessarily an isomorphism,
+contradicting $p_a(C)=2$.
+If $p$ is singular, put $J=\mathcal H om(I_p,\OO_C)$.
+Locally at $p$ it is the fractional ideal
+$\{g:g\mathfrak m_p\subset\OO_{C,p}\}$.
+In fact $g\mathfrak m_p\subset\mathfrak m_p$: otherwise $ga$ is a unit
+for some $a\in\mathfrak m_p$, and every $b\in\mathfrak m_p$ equals
+$a(gb)/(ga)$, making the maximal ideal principal and the point regular.
+Thus $J=\mathcal E nd(I_p)$, a finite sheaf of algebras.
+Its relative spectrum is an integral projective curve finite birational
+over $C$. Such a curve has only constant global functions, contradicting
+$h^0(J)=2$. There is no base point.
+
+The canonical map is nonconstant since $\deg\omega_C=2>0$.
+It is finite, has degree two, and pulls $\OO(1)$ back to $\omega_C$.
+Its direct image of $\OO_C$ is torsion-free over the smooth curve $\PP^1$,
+and hence locally free. This proves flatness.
+\end{proof}
+
+\begin{lemma}\label{lem:halfring}
+Let $A$ have degree one and $A^2\simeq\omega_C$.
+If $h^0(A)=1$, then $R(C,A)$ has generators of degrees $1,2,5$
+and one relation of degree ten.
+If $h^0(A)=0$, it has generators of degrees $2,2,3,3$
+and two relations of degree six.
+\end{lemma}
+\begin{proof}
+First suppose $h^0(A)=1$ and choose its section $x_1$.
+Its zero scheme has length one and is an effective Cartier divisor.
+The point $p$ is smooth: its local maximal ideal is generated by
+the local equation of that divisor.
+Thus $A=\OO_C(p)$.
+Riemann--Roch and $A^2=\omega_C$ give
+\[
+ h^0(A^0)=1,\quad h^0(A)=1,\quad h^0(A^2)=2,\quad
+ h^0(A^k)=k-1\quad(k\ge3).
+\]
+The pole orders at $p$ of functions regular off $p$ are therefore
+$0,2,4,5,6,7,\ldots$; the missing positive orders are $1,3$.
+Choose functions $y,z$ of exact pole orders $2,5$.
+Every allowed pole order is $2b+5\epsilon$ with $\epsilon=0,1$.
+Subtract a suitable multiple of $y^bz^\epsilon$ to reduce the pole order,
+and iterate. This proves generation by $y,z$ for the affine function
+ring off $p$, and by the homogeneous generators $x_1,y,z$ of degrees
+$1,2,5$ for the section ring.
+The square $z^2$ has pole order ten; reducing it gives a homogeneous
+relation of degree ten with nonzero $y^5$ coefficient.
+After using that relation to reduce the exponent of $z$ to $0$ or $1$,
+the remaining monomials in any fixed degree have distinct pole orders.
+They are linearly independent and form the full space counted above.
+Thus there are no further relations.
+
+Now suppose $h^0(A)=0$, and use the double cover in Lemma \ref{lem:canonical}.
+The trace decomposition and Euler characteristics give
+\[
+ f_*\OO_C=\OO\oplus\OO(-3),\qquad
+ f_*A=\OO(-1)\oplus\OO(-1).
+\]
+For the second equality, a rank-two vector bundle on $\PP^1$ splits as
+a sum of line bundles. Its Euler characteristic is $\chi(A)=0$,
+so its degree is $-2$; absence of sections forces both summands to have
+negative degree, hence both are $-1$.
+
+Let $S=\C[y_1,y_2]$, with both variables of degree two, corresponding to
+$H^0(A^2)$. The projection formula gives, as graded $S$-modules,
+\[
+ R(C,A)_{\rm even}=S\oplus S w,\quad \deg w=6,\qquad
+ R(C,A)_{\rm odd}=S z_1\oplus S z_2,\quad\deg z_i=3.
+\]
+Here $f_*A^3=\OO^2$ supplies $z_1,z_2$.
+Finite-flat duality gives a perfect pairing
+\[
+ f_*A^3\otimes f_*A^3\longrightarrow
+ f_*A^6=f_*\omega_{C/\PP^1}\longrightarrow\OO_{\PP^1}.
+\]
+The equality $A^6=\omega_{C/\PP^1}$ follows from
+$\omega_C=A^2$ and $f^*\omega_{\PP^1}^{-1}=A^4$.
+This pairing is symmetric. It is given by a nondegenerate constant
+$2\times2$ matrix on $\OO^2$.
+Over $\C$ choose an isotropic basis: the self-pairings of $z_1,z_2$
+vanish and their mutual pairing is nonzero.
+The trace kills the $\OO(3)$ summand of $f_*A^6=\OO(3)\oplus\OO$,
+so $z_1^2$ and $z_2^2$ are cubic polynomials in $y_1,y_2$,
+while $z_1z_2$ has nonzero $w$ coefficient.
+It follows that
+\[
+ R(C,A)=\C[y_1,y_2,z_1,z_2]/
+        (z_1^2-f_3(y_1,y_2),\,z_2^2-g_3(y_1,y_2)).
+\]
+To check that the displayed relations are complete, their quotient is free
+over $S$ with basis $1,z_1,z_2,z_1z_2$.
+These map to a basis of the already computed free $S$-module $R(C,A)$.
+Thus the map is an isomorphism, proving the claim.
+\end{proof}
+
+\subsection{The section ring of the manifold}
+By \eqref{eq:curve-ring}, the curve generators lift to $R$.
+Together with $s_1,\ldots,s_{n-1}$ they generate $R$: reducing a homogeneous
+element modulo the regular sequence and then subtracting its expression
+reduces the remaining degrees, so induction proves surjectivity.
+
+Relations lift as well. For one regular element $s$, a polynomial relation
+$g$ in the quotient evaluates in $R$ to $s\,b$.
+Express $b$ in the lifted generators and replace $g$ by $g-sB$;
+this is a relation in $R$ reducing to $g$.
+Repeat through the regular sequence.
+To see that these generate all relations, observe that modulo the new degree-one variables the
+lifted equations form the given complete intersection. Hence, together
+with those variables, they form a regular sequence in the polynomial ring.
+Its Hilbert series is the curve Hilbert series divided by $(1-z)^{n-1}$,
+which is also the Hilbert series of $R$ by regularity of the original
+sections. The surjection is therefore an isomorphism in each degree.
+
+Consequently $X=\Proj R$ has one of the presentations
+\begin{equation}\label{eq:weighted}
+ X_{10}\subset\PP(1^n,2,5),\qquad
+ X_{6,6}\subset\PP(1^{n-1},2,2,3,3).
+\end{equation}
+The notation $1^n$ means $n$ coordinates of weight one.
+The first ambient space has dimension $n+1$ and one equation;
+the second has dimension $n+2$ and two equations.
+The equality $X=\Proj R$ follows for every ample line bundle by taking a
+sufficiently high very ample Veronese subring, which does not change Proj.
+
+\subsection{The Euler characteristic}
+At a point of $X$, consider the weights of the homogeneous generators
+which are nonzero there. A stabilizer of the weighted scalar action has
+order equal to the gcd of those weights.
+For all sufficiently large integers $k$, the line bundle $L^k$ is generated
+by sections. Hence at that point, for every such $k$, some degree-$k$
+polynomial in the generators is nonzero. A nonzero monomial uses only
+generators nonzero there, so their gcd divides every sufficiently large
+integer. Their gcd is therefore one.
+Thus $X$ lies in the free-action locus of the weighted ambient space.
+
+On this smooth locus the weighted Euler sequence is
+\[
+ 0\longrightarrow\OO\longrightarrow\bigoplus_i\OO(w_i)
+ \longrightarrow T_{\rm amb}\longrightarrow0.
+\]
+The first map is the weighted radial vector field.
+The normal bundle of a smooth complete intersection of degrees $d_j$
+is $\bigoplus_j L^{d_j}$. Restricting the Euler sequence and using the
+normal sequence yields
+\[
+ c(T_X)=\frac{\prod_i(1+w_i x)}{\prod_j(1+d_j x)}.
+\]
+For \eqref{eq:weighted} this becomes
+\begin{equation}\label{eq:weightedchern}
+ \frac{(1+x)^n(1+2x)(1+5x)}{1+10x},
+ \qquad
+ \frac{(1+x)^{n-1}(1+2x)^2(1+3x)^2}{(1+6x)^2}.
+\end{equation}
+
+We compute the top coefficients by a generating-function identity.
+For any series $F(x)$,
+\[
+ \sum_{n\ge0}\bigl([x^n](1+x)^nF(x)\bigr)t^n
+ =\frac1{1-t}F\!\left(\frac{t}{1-t}\right).
+\]
+It follows by summing $\sum_{n\ge j}\binom njt^n=t^j/(1-t)^{j+1}$.
+For the first expression in \eqref{eq:weightedchern}, subtracting the
+generating series $\sum_{n\ge0}(n+1)t^n=(1-t)^{-2}$ gives
+\[
+ \frac{(1+t)(1+4t)}{(1-t)^2(1+9t)}-\frac1{(1-t)^2}
+ =\frac25\left(\frac1{1+9t}-\frac1{1-t}\right).
+\]
+For the second it gives
+\[
+\begin{aligned}
+ \frac{(1+t)^2(1+2t)^2}{(1-t)^2(1+5t)^2}-\frac1{(1-t)^2}
+ ={}&\frac4{25}+\frac{26}{75(1+5t)}\\
+ &+\frac4{25(1+5t)^2}-\frac2{3(1-t)}.
+\end{aligned}
+\]
+Extracting any positive degree $n$ yields respectively
+\[
+ c_n-(n+1)=\frac25\bigl((-9)^n-1\bigr),\qquad
+ c_n-(n+1)=\frac{(12n+38)(-5)^n-50}{75}.
+\]
+Both are negative when $n=15$ or $27$, contradicting $c_n=n+1$.
+This excludes the two remaining pairs in \eqref{eq:highpairs}.
+This proves Theorem \ref{thm:index}\textup{(i)}.
+
+\section{The index bound in even dimensions}\label{sec:even}
+
+\subsection{The case \texorpdfstring{$r=n-5$}{r=n-5}}\label{sec:even6}
+Now $c=n+1-r=6$, so \eqref{eq:fixedc} gives $r\mid90$.
+If $n$ is even, $r$ is odd. The odd divisors $1,3,5,9,15,45$
+therefore give exactly
+\[
+ (n,r)=(6,1),(8,3),(10,5),(14,9),(20,15),(50,45).
+\]
+Let $m=h^0(L)$ and $k=h^0(2L)$, and put
+\[
+ A=m-n-1,\qquad B=k-(n+1)m+\frac{n(n+1)}2.
+\]
+Reciprocity and $h(1)=1$ give
+\[
+ h(z)=1+Az+Bz^2-(1+2A+2B)z^3+Bz^4+Az^5+z^6.
+\]
+Substitution in \eqref{eq:ND} gives
+\begin{align*}
+ N(t)={}&1+(16A+4B+33)t^2+(-16A-8B+27)t^4+(4B+3)t^6,\\
+ D(t)={}&1+(64A+16B+137)t^2+(-64A-80B+837)t^4\\
+ &+(-128A+160B+893)t^6+(128A-160B-893)t^8\\
+ &+(64A+80B-837)t^{10}+(-64A-16B-137)t^{12}-t^{14}.
+\end{align*}
+Compute $a_{n/2}$ by \eqref{eq:division}; the required equation is
+$a_{n/2}=1$.
+
+For each $m=0,\ldots,n$, a prime $p$ is specified in
+Appendix \ref{app:evenprimes}. For every $k=0,\ldots,p-1$ the computed
+$a_{n/2}$ differs from $1$ modulo $p$.
+That excludes \emph{every} integer $k$, with no upper bound required.
+The numbers of specializations and the largest primes used are
+\[
+\begin{array}{r|r|r|r}
+n&r&\text{values of }m&\text{largest prime}\\ \hline
+6&1&7&7\\8&3&9&19\\10&5&11&13\\14&9&15&23\\
+20&15&21&19\\50&45&51&61
+\end{array}
+\]
+The $114$ pairs $(n,m)$ are therefore excluded. In particular,
+this proves the exclusion of $n=10,r=5$ used in Section \ref{sec:C10}.
+
+\subsection{The case \texorpdfstring{$r=n-7$}{r=n-7}}
+Here $c=8$, and \eqref{eq:fixedc} gives $r\mid224$.
+The only odd divisors of $224$ are $1,7$, so the only even-dimensional
+pairs are $(8,1)$ and $(14,7)$. Section \ref{sec:C8} already excludes
+the former.
+
+For $(14,7)$ set $m=h^0(L)$, $k=h^0(2L)$, $\ell=h^0(3L)$.
+The first four coefficients of $h(z)$ are
+\[
+ h_0=1,\quad h_1=m-15,\quad h_2=k-15m+105,\quad
+ h_3=\ell-15k+105m-455.
+\]
+Set $h_4=1-2\sum_{i=0}^3h_i$ and reflect.
+The integer equation obtained from
+$[t^{14}]N(t)^2/D(t)=1$, after dividing its coefficient gcd,
+is denoted $F_{14,7}(m,k,\ell)=0$. It has total degree seven and 120
+monomials. It is obtained by \eqref{eq:ND} and \eqref{eq:division}, and its
+coefficients are listed in
+Appendix \ref{app:n14poly}.
+
+The section bound and the equality lemma give
+$0\le m\le14$ and $0\le k\le2^{14}+14=16398$.
+For each pair $(m,k)$ we test the resulting polynomial in $\ell$
+modulo successive primes, obtaining
+\[
+\begin{array}{r|r}
+\text{primes tested through}&\text{remaining pairs}\\ \hline
+\text{initial}&245985\\31&4299\\61&175\\97&5\\113&0.
+\end{array}
+\]
+Thus $(14,7)$ is excluded as well.
+
+Finally, if $n$ is even and $r\ge n-7$, parity gives just
+$r=n+1,n-1,n-3,n-5,n-7$, omitting any nonpositive value.
+The previous section treats the first three; this section excludes the last
+two. This proves Theorem \ref{thm:index}\textup{(ii)}.
+The proofs of $C_7$ through $C_{10}$, together with the established
+$n\le6$ theorem, prove Theorem \ref{thm:dimension}.
+
+\section{Computational verification}\label{sec:python}
+
+\subsection{The verification program}
+
+The verification program
+\nolinkurl{verify_fujita_further_extensions.py} uses SymPy for
+polynomial algebra over $\Q$ and Python integers for the finite
+congruence calculations. It constructs the Hilbert polynomials,
+characteristic classes, and eliminants from the formulas in the
+preceding sections. The parameter bounds and moduli are specified in
+the source and in the tables of this article; no input data files
+are required.
+
+The calculation has two parts. First, the program derives the
+polynomial equations using Newton's identities, Riemann--Roch, and
+the signature formula. It then excludes the permitted integer
+solutions by the discriminant and congruence tests. A successful run
+verifies these algebraic identities and finite calculations.
+The geometric arguments on which they depend are given in the
+preceding sections.
+
+The principal functions correspond to the text as follows.
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.44\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}@{}}
+\toprule
+Calculation&Functions&Assertions checked\\
+\midrule
+Dimension seven&
+\nolinkurl{c7_symbolic_certificate}\par
+\nolinkurl{c7_finite_certificate}&
+Chern identities, both eliminations, and discriminants.\\[4pt]
+Dimension eight&
+\nolinkurl{c8_symbolic_certificate}\par
+\nolinkurl{c8_arithmetic_certificate}&
+Hilbert polynomials, signature quartics, and congruences.\\[4pt]
+Dimension nine&
+\nolinkurl{c9_eliminant}\par
+\nolinkurl{sieve_three_parameters}&
+The resultant quartic and all bounded triples.\\[4pt]
+Dimensions ten and fourteen&
+\nolinkurl{signature_polynomial}\par
+\nolinkurl{compact_c10_polynomial}\par
+\nolinkurl{check_signature_reconstruction}\par
+\nolinkurl{sieve_three_parameters}\par
+\nolinkurl{small_signature_sieve}&
+Signature polynomials and the corresponding congruence tests.\\[4pt]
+$r=n-3$&
+\nolinkurl{high_index_arithmetic}\par
+\nolinkurl{high_bernoulli_certificate}\par
+\nolinkurl{high_dimension_and_euler_certificates}&
+The $30$ eliminants, the congruence modulo $691$, and the Euler-characteristic formulas.\\[4pt]
+$r=n-5$, $n$ even&
+\nolinkurl{coindex6_even}&
+The signature recurrence for all $114$ specializations.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For the symbolic calculations, the program constructs the power series
+by \eqref{eq:logrec} and \eqref{eq:exprec}, using rational coefficients.
+It solves linear equations, forms the dimension-nine resultant, and
+computes the Gr\"obner bases in Section \ref{sec:higharith} over $\Q$.
+Denominators and common coefficient factors are removed before an
+integer polynomial is passed to a congruence test.
+
+A polynomial in one variable is evaluated modulo $p$ by Horner's rule,
+at every residue $0,\ldots,p-1$, until a root is found or the residues
+are exhausted. A polynomial which becomes identically zero modulo $p$
+is retained, as it must be. The procedure also accommodates a drop in
+degree after reduction. In dimension seven, the alternative
+discriminant test uses the integer square root.
+
+\subsection{Representation of the candidate sets}
+
+The two largest initial sets have $102797460$ and $672398100$ triples.
+The program represents a set of third coordinates by the binary digits
+of a nonnegative integer. For fixed $(m,k)$, write
+\[
+ B_{m,k}=\sum_{\ell\ \mathrm{allowed}}2^\ell.
+\]
+Initially $0\le\ell<L$ and $B_{m,k}=2^L-1$. This represents all
+possible third coordinates for the given pair.
+
+Fix a prime $p$. Whether the specialized polynomial has a root modulo
+$p$ depends only on the parameter residues. For each pair
+$(m,k\bmod p)$, form
+\[
+ R=\sum_{\substack{0\le a<p\\
+ \text{the specialization at }\ell=a\text{ has a root modulo }p}}2^a.
+\]
+If $q=\lceil L/p\rceil$, the integer
+\[
+ M=R\left(1+2^p+\cdots+2^{(q-1)p}\right)
+       \mathbin{\&}(2^L-1)
+  =R\,\frac{2^{pq}-1}{2^p-1}\mathbin{\&}(2^L-1)
+\]
+has digit $\ell$ equal to digit $\ell\bmod p$ of $R$. Here $\&$
+denotes bitwise intersection. The repeated blocks have disjoint
+supports, so no carries occur in the multiplication. Replacing
+$B_{m,k}$ by $B_{m,k}\mathbin{\&}M$ therefore applies the congruence
+condition to every permitted third coordinate.
+
+The number of remaining triples is the sum of the numbers of nonzero
+binary digits, computed by \nolinkurl{int.bit_count()}. Once at most
+$500000$ triples remain, the program converts the set digits to a list
+of triples and continues by direct evaluation. The length of this list
+is checked against the preceding count. Thus both representations
+describe the same finite set at every stage.
+
+The periodic repetition formula is implemented in
+\nolinkurl{repeat_residues}. The program checks it against direct
+enumeration for every subset of residues at moduli $1,\ldots,7$ and
+lengths $1,\ldots,19$. It also compares the two representations on a
+small range using the dimension-nine polynomial itself.
+
+At each prime, evaluations for a repeated tuple of parameter residues
+are stored and reused. This is valid because evaluation of an integer
+polynomial commutes with reduction. For dimension nine, the
+substitutions \eqref{eq:C9powers} also have integer coefficients and
+therefore commute with reduction. The stored values are discarded when
+the prime changes.
+
+\subsection{Reproduction of the calculations}
+
+The source file requires Python 3.10 or later and SymPy. Running
+\nolinkurl{python verify_fujita_further_extensions.py} derives the
+equations and executes all the finite checks. It prints the successive
+counts and ends with \texttt{ALL PYTHON CHECKS PASSED.} if every
+assertion succeeds. The tests use Python assertions, so the program is
+run without the optimization flag \texttt{-O}.
+
+The option \texttt{--export-json audit.json} additionally writes the
+derived coefficient arrays, eliminants, residue values, and sieve
+counts. This file is an output of the calculation. The high-index
+eliminants have coefficient lists in descending powers. Other
+polynomials are recorded by their variables, monomial exponents, and
+integer coefficients; when present, the additional
+\nolinkurl{coefficients_latex} list runs in increasing powers of the
+specified root variable. The program also checks its
+characteristic-class recurrences on $\PP^7$, $\PP^9$, and $\PP^{11}$,
+and verifies the signature polynomials by recovering the Todd class
+from the Hilbert polynomial.
+
+The repository contains the TeX source, this article, the Python file,
+and instructions for compiling and running them. The polynomial
+appendices below allow the equations and congruence tables to be read
+independently of the source code.
+
+\appendix
+
+\clearpage
+\section{The eliminant in dimension nine}\label{app:c9poly}
+We use the notation of Section \ref{sec:C9}:
+$u=s_2,v=s_4,w=s_6,a=s_3,b=s_5$.
+The two primitive equations obtained after eliminating $s_7,s_8,s_9$
+are $E_i=L_i b+C_i=0$, with the following coefficients.
+\begin{align*}
+L_1&={}-8640 u^{2} - 6336 a u\\
+&\quad{} + 410112 u - 17280 v\\
+&\quad{} + 103680 a - 1078272
+\end{align*}
+\begin{align*}
+C_1&={}-14685 u^{5} + 324060 u^{4}\\
+&\quad{} - 31680 u^{3} v - 240 a u^{3}\\
+&\quad{} - 2326560 u^{3} + 590400 u^{2} v\\
+&\quad{} - 34320 u^{2} w + 2640 a^{2} u^{2}\\
+&\quad{} - 160320 a u^{2} + 6453120 u^{2}\\
+&\quad{} - 9900 u v^{2} + 30240 a u v\\
+&\quad{} - 3127680 u v + 215040 u w\\
+&\quad{} - 53760 a^{2} u + 890112 a u\\
+&\quad{} + 114974961216 u + 162000 v^{2}\\
+&\quad{} - 362880 a v + 3663360 v\\
+&\quad{} - 1920 a w - 295680 w\\
+&\quad{} + 640 a^{3} + 157440 a^{2}\\
+&\quad{} - 844800 a - 844738332416
+\end{align*}
+\begin{align*}
+L_2&={}-43200 u^{2} + 113472 a u\\
+&\quad{} + 889344 u - 86400 v\\
+&\quad{} - 1610496 a + 2350080
+\end{align*}
+\begin{align*}
+C_2&={}262995 u^{5} - 5823780 u^{4}\\
+&\quad{} + 567360 u^{3} v + 59280 a u^{3}\\
+&\quad{} + 41549280 u^{3} - 8781120 u^{2} v\\
+&\quad{} + 614640 u^{2} w - 47280 a^{2} u^{2}\\
+&\quad{} - 559680 a u^{2} - 112402560 u^{2}\\
+&\quad{} + 177300 u v^{2} - 211680 a u v\\
+&\quad{} + 39035520 u v - 5859840 u w\\
+&\quad{} + 860160 a^{2} u - 1807104 a u\\
+&\quad{} - 2059103882688 u - 702000 v^{2}\\
+&\quad{} - 362880 a v - 39744000 v\\
+&\quad{} + 474240 a w + 9811200 w\\
+&\quad{} - 158080 a^{3} + 1109760 a^{2}\\
+&\quad{} + 678912 a + 13261343095040
+\end{align*}
+
+Their resultant satisfies
+\[
+ \Res_b(E_1,E_2)=241920F(u,v,w,a).
+\]
+The coefficients of $F=\sum_{i=0}^4A_i(u,v,w)a^i$ are
+\begin{align*}
+A_4&={}3840 u - 63488
+\end{align*}
+\begin{align*}
+A_3&={}5760 u^{2} - 362496 u\\
+&\quad{} + 11520 v + 2222080
+\end{align*}
+\begin{align*}
+A_2&={}720 u^{4} - 16512 u^{3}\\
+&\quad{} - 4320 u^{2} v + 152064 u^{2}\\
+&\quad{} + 209664 u v - 11520 u w\\
+&\quad{} + 3520512 u - 2594304 v\\
+&\quad{} + 190464 w - 11808768
+\end{align*}
+\begin{align*}
+A_1&={}13320 u^{5} - 242784 u^{4}\\
+&\quad{} - 6048 u^{3} v + 1837824 u^{3}\\
+&\quad{} + 72576 u^{2} v + 70272 u^{2} w\\
+&\quad{} - 7492608 u^{2} - 21600 u v^{2}\\
+&\quad{} - 2953728 u v - 387072 u w\\
+&\quad{} - 68163073536 u + 673920 v^{2}\\
+&\quad{} - 34560 v w + 12146688 v\\
+&\quad{} + 141312 w + 59894179840
+\end{align*}
+\begin{align*}
+A_0&={}-12015 u^{7} + 765684 u^{6}\\
+&\quad{} - 49950 u^{5} v - 13992912 u^{5}\\
+&\quad{} + 2029032 u^{4} v - 28080 u^{4} w\\
+&\quad{} + 106964928 u^{4} - 59940 u^{3} v^{2}\\
+&\quad{} - 25028928 u^{3} v + 1415808 u^{3} w\\
+&\quad{} + 93693805248 u^{3} + 1229040 u^{2} v^{2}\\
+&\quad{} - 56160 u^{2} v w + 123482880 u^{2} v\\
+&\quad{} - 13533696 u^{2} w - 4537368421632 u^{2}\\
+&\quad{} - 16200 u v^{3} - 6384960 u v^{2}\\
+&\quad{} + 495360 u v w + 187916888448 u v\\
+&\quad{} + 41748480 u w + 33647373560832 u\\
+&\quad{} + 108000 v^{3} + 5702400 v^{2}\\
+&\quad{} - 806400 v w - 1248789496320 v\\
+&\quad{} - 40857600 w - 50901671137280
+\end{align*}
+
+Each displayed equation is a polynomial over the integers. The resultant
+identity may also be verified simply by expanding $L_1C_2-L_2C_1$.
+
+\clearpage
+\section{The signature polynomial in dimension fourteen}\label{app:n14poly}
+For $n=14,r=7$, write
+$F_{14,7}(m,k,\ell)=\sum_{i=0}^7B_i(m,k)\ell^i$.
+The variables are the section counts $m=h^0(L)$, $k=h^0(2L)$,
+$\ell=h^0(3L)$, not coefficients of the Hilbert numerator.
+The following coefficients, together with that convention, specify the
+entire polynomial used in the sieve.
+\begin{align*}
+B_7&={}-18874368
+\end{align*}
+\begin{align*}
+B_6&={}-7134511104 m + 1453326336 k\\
+&\quad{} + 20362690560
+\end{align*}
+\begin{align*}
+B_5&={}-1155790798848 m^{2} + 470877732864 k m\\
+&\quad{} + 6596407590912 m - 47959769088 k^{2}\\
+&\quad{} - 1343814893568 k - 9410722832384
+\end{align*}
+\begin{align*}
+B_4&={}-104021171896320 m^{3} + 63568493936640 k m^{2}\\
+&\quad{} + 890365964451840 m^{2} - 12949137653760 k^{2} m\\
+&\quad{} - 362769292984320 k m - 2540044282281984 m\\
+&\quad{} + 879262433280 k^{3} + 36951535779840 k^{2}\\
+&\quad{} + 517495201488896 k + 2415126819309568
+\end{align*}
+\begin{align*}
+B_3&={}-5617143282401280 m^{4} + 4576931563438080 k m^{3}\\
+&\quad{} + 64095617097400320 m^{3} - 1398506866606080 k^{2} m^{2}\\
+&\quad{} - 39172524988170240 k m^{2} - 274232905622028288 m^{2}\\
+&\quad{} + 189920685588480 k^{3} m + 7980195706306560 k^{2} m\\
+&\quad{} + 111741528791384064 k m + 521405253005328384 m\\
+&\quad{} - 9671886766080 k^{4} - 541906375802880 k^{3}\\
+&\quad{} - 11382814465998848 k^{2} - 106236446111965184 k\\
+&\quad{} - 371714603757760192
+\end{align*}
+\begin{align*}
+B_2&={}-181995442349801472 m^{5} + 185365728319242240 k m^{4}\\
+&\quad{} + 2595437832547860480 m^{4} - 75519370796728320 k^{2} m^{3}\\
+&\quad{} - 2114962182037831680 k m^{3} - 14803616548748132352 m^{3}\\
+&\quad{} + 15383575532666880 k^{3} m^{2} + 646287634417582080 k^{2} m^{2}\\
+&\quad{} + 9048032227521921024 k m^{2} + 42212600683249065984 m^{2}\\
+&\quad{} - 1566845656104960 k^{4} m - 87774136636538880 k^{3} m\\
+&\quad{} - 1843398338061828096 k^{2} m - 17201655546463420416 k m\\
+&\quad{} - 60177407870074533248 m + 63834452656128 k^{5}\\
+&\quad{} + 4470319371386880 k^{4} + 125188081996054528 k^{3}\\
+&\quad{} + 1752420756180602880 k^{2} + 12262096027360696000 k\\
+&\quad{} + 34310884872797383402
+\end{align*}
+\begin{align*}
+B_1&={}-3275917962296426496 m^{6} + 4003899731695632384 k m^{5}\\
+&\quad{} + 56052068529261772800 m^{5} - 2039023011511664640 k^{2} m^{4}\\
+&\quad{} - 57094416397290700800 k m^{4} - 399563744123097317376 m^{4}\\
+&\quad{} + 553808719176007680 k^{3} m^{3} + 23262458998475980800 k^{2} m^{3}\\
+&\quad{} + 325620044334329757696 k m^{3} + 1518889838325936979968 m^{3}\\
+&\quad{} - 84609665429667840 k^{4} m^{2} - 4739009781222604800 k^{3} m^{2}\\
+&\quad{} - 99510166256361209856 k^{2} m^{2} - 928422555999352602624 k m^{2}\\
+&\quad{} - 3247402009645454876928 m^{2} + 6894120886861824 k^{5} m\\
+&\quad{} + 482713662770380800 k^{4} m + 13515784244957085696 k^{3} m\\
+&\quad{} + 189166326551280304128 k^{2} m + 1323418788249959729408 k m\\
+&\quad{} + 3702470602277503658824 m - 234059659739136 k^{6}\\
+&\quad{} - 19667609026560000 k^{5} - 688408640537829376 k^{4}\\
+&\quad{} - 12847561883227873280 k^{3} - 134833727662115152448 k^{2}\\
+&\quad{} - 754494298636214961516 k - 1758664553769502206697
+\end{align*}
+\begin{align*}
+B_0&={}-25271367137715290112 m^{7} + 36035097585260691456 k m^{6}\\
+&\quad{} + 504384118879407833088 m^{6} - 22021448524325978112 k^{2} m^{5}\\
+&\quad{} - 616516421899247419392 k m^{5} - 4313842577830193135616 m^{5}\\
+&\quad{} + 7476417708876103680 k^{3} m^{4} + 313990602631906590720 k^{2} m^{4}\\
+&\quad{} + 4394397830215019397120 k m^{4} + 20494705844786211127296 m^{4}\\
+&\quad{} - 1522973977734021120 k^{4} m^{3} - 85287891313297981440 k^{3} m^{3}\\
+&\quad{} - 1790582921129257205760 k^{2} m^{3} - 16703206200200828583936 k m^{3}\\
+&\quad{} - 58414055525899661578752 m^{3} + 186141263945269248 k^{5} m^{2}\\
+&\quad{} + 13031086502636421120 k^{4} m^{2} + 364803926672740515840 k^{3} m^{2}\\
+&\quad{} + 5104923740232864915456 k^{2} m^{2} + 35708356992589914385152 k m^{2}\\
+&\quad{} + 99882939615801221882664 m^{2} - 12639221625913344 k^{6} m\\
+&\quad{} - 1061873062887555072 k^{5} m - 37161614273488404480 k^{4} m\\
+&\quad{} - 693419662686368464896 k^{3} m - 7276141194137848482176 k^{2} m\\
+&\quad{} - 40708552503242224866488 k m - 94872385352327729726730 m\\
+&\quad{} + 367808036732928 k^{7} + 36053990168199168 k^{6}\\
+&\quad{} + 1514222256517341184 k^{5} + 35321107231167932416 k^{4}\\
+&\quad{} + 494209522557826902080 k^{3} + 4147821048038964926314 k^{2}\\
+&\quad{} + 19334692281325631968759 k + 38615228954566746978894
+\end{align*}
+
+\clearpage
+\section{Congruence moduli for \texorpdfstring{$r=n-5$}{r=n-5}}
+\label{app:evenprimes}
+Each row says: for the indicated $n$ and each listed value of $m$, the
+polynomial $a_{n/2}-1$ from the recurrence in Section \ref{sec:even6}
+has no root $k$ modulo the indicated prime.
+The lists for each $n$ partition $m=0,\ldots,n$.
+\begin{longtable}{rrp{0.66\linewidth}}
+\toprule
+$n$&Prime&Values of $m$\\ \midrule
+\endfirsthead
+\toprule $n$&Prime&Values of $m$\\ \midrule\endhead
+\bottomrule\endfoot
+6&3&$1,2,4,5$\\
+6&5&$0,3$\\
+6&7&$6$\\
+8&7&$2,3,5,6$\\
+8&11&$0,1,4,8$\\
+8&19&$7$\\
+10&3&$0,1,3,4,6,7,9,10$\\
+10&7&$2,5$\\
+10&13&$8$\\
+14&5&$1,2,6,7,11,12$\\
+14&7&$4,5,8$\\
+14&11&$0,3,14$\\
+14&23&$9,10,13$\\
+20&3&$1,4,7,10,13,16,19$\\
+20&7&$3,17$\\
+20&11&$2,12,15$\\
+20&13&$5,6,18$\\
+20&17&$8,9,11,14,20$\\
+20&19&$0$\\
+50&5&$1,6,11,16,21,26,31,36,41,46$\\
+50&7&$4,5,8,12,15,18,19,22,25,29,32,33,39,40,43,47,50$\\
+50&11&$0,2,10,13,24,27,35,38,44,49$\\
+50&13&$34$\\
+50&17&$7,28,30,45$\\
+50&19&$37,48$\\
+50&23&$14,23$\\
+50&29&$20$\\
+50&37&$42$\\
+50&47&$3,17$\\
+50&61&$9$\\
+\end{longtable}
+
+\clearpage
+\section{Sieve tables}\label{app:sievetables}
+The prime in a row is applied after all preceding primes in that column.
+A dash means that prime was not used in that particular sieve.
+The initial counts are $102797460$ for $C_9$ and $672398100$ for $C_{10}$.
+\begin{longtable}{rrr}
+\toprule Prime&Remaining triples for $C_9$&Remaining triples for $C_{10}$\\\midrule
+\endfirsthead
+\toprule Prime&Remaining triples for $C_9$&Remaining triples for $C_{10}$\\\midrule\endhead
+\bottomrule\endfoot
+3&--&448265745\\
+5&--&267329529\\
+7&--&181171361\\
+11&--&119711405\\
+13&71051845&80209438\\
+17&47418292&51982239\\
+19&31752841&33510036\\
+23&20583262&21301530\\
+29&13643896&13548080\\
+31&8899360&8661101\\
+37&5721568&5489690\\
+41&3671815&3474806\\
+43&2357661&2211620\\
+47&1511609&1397055\\
+53&964275&887441\\
+59&611168&568511\\
+61&390389&360233\\
+67&248724&227836\\
+71&157634&144692\\
+73&99718&91881\\
+79&63012&58870\\
+83&40028&37415\\
+89&25330&23681\\
+97&16021&14926\\
+101&10047&9501\\
+103&6324&6032\\
+107&3958&3869\\
+109&2444&2403\\
+113&1501&1511\\
+127&938&946\\
+131&579&614\\
+137&357&409\\
+139&217&254\\
+149&136&148\\
+151&87&90\\
+157&57&63\\
+163&39&41\\
+167&25&28\\
+173&14&18\\
+179&10&12\\
+181&3&7\\
+191&3&3\\
+193&2&3\\
+197&2&2\\
+199&1&1\\
+211&1&1\\
+223&0&1\\
+227&--&1\\
+229&--&1\\
+233&--&1\\
+239&--&0\\
+\end{longtable}
+
+For $n=14,r=7$, the complete pair counts are:
+\begin{longtable}{rr}
+\toprule Prime&Remaining pairs\\\midrule
+\endfirsthead
+\toprule Prime&Remaining pairs\\\midrule\endhead
+\bottomrule\endfoot
+2&245985\\
+3&191325\\
+5&160717\\
+7&101680\\
+11&63341\\
+13&41844\\
+17&28247\\
+19&18531\\
+23&10837\\
+29&6812\\
+31&4299\\
+37&2733\\
+41&1681\\
+43&1069\\
+47&659\\
+53&415\\
+59&249\\
+61&175\\
+67&117\\
+71&68\\
+73&40\\
+79&24\\
+83&13\\
+89&10\\
+97&5\\
+101&4\\
+103&2\\
+107&2\\
+109&1\\
+113&0\\
+\end{longtable}
+
+\clearpage
+\section{An eliminant modulo eleven}
+The $n=9,r=6,m=0$ eliminant displayed in Section \ref{sec:higharith}
+has the following values modulo eleven.
+All entries are nonzero, so this specialization has no integer root.
+\[
+\begin{array}{c|rrrrrrrrrrr}
+a&0&1&2&3&4&5&6&7&8&9&10\\\hline
+E_{9,0}(a)\bmod11&
+10&8&7&6&8&9&9&1&4&8&7\end{array}\]
+
+The optional JSON export records every coefficient vector and every residue
+list for all 30 high-index eliminants. In each coefficient vector the
+coefficients are ordered from the highest power down to the constant term.
+The accompanying program derives these polynomials from the Hilbert
+polynomial.
+
+
+\begin{thebibliography}{LW90}
+
+\bibitem[Deb15]{debarre}
+O.~Debarre,
+\emph{Cohomological characterizations of the complex projective space},
+arXiv:1512.04321, 2015.
+\url{https://arxiv.org/abs/1512.04321}.
+
+\bibitem[FPR17]{fpr}
+M.~Franciosi, R.~Pardini, and S.~Rollenske,
+\emph{Gorenstein stable surfaces with $K_X^2=1$ and $p_g>0$},
+Math. Nachr. \textbf{290} (2017), no.~5--6, 794--814.
+\url{https://arxiv.org/abs/1511.03238}.
+
+\bibitem[Fuj80]{fujita}
+T.~Fujita,
+\emph{On topological characterizations of complex projective spaces and
+affine linear spaces},
+Proc. Japan Acad. Ser. A Math. Sci. \textbf{56} (1980), no.~5, 231--234.
+\url{https://doi.org/10.3792/pjaa.56.231}.
+
+\bibitem[KO73]{ko}
+S.~Kobayashi and T.~Ochiai,
+\emph{Characterizations of complex projective spaces and hyperquadrics},
+J. Math. Kyoto Univ. \textbf{13} (1973), 31--47.
+
+\bibitem[LP25]{lp}
+P.~Li and T.~Peternell,
+\emph{Compactification of homology cells, Fujita's conjectures and the
+complex projective space},
+arXiv:2502.01072v3, 2025.
+\url{https://arxiv.org/abs/2502.01072v3}.
+
+\bibitem[LW90]{lw}
+A.~S.~Libgober and J.~W.~Wood,
+\emph{Uniqueness of the complex structure on K\"ahler manifolds of certain
+homotopy types},
+J. Differential Geom. \textbf{32} (1990), no.~1, 139--154.
+\url{https://doi.org/10.4310/jdg/1214445041}.
+
+\end{thebibliography}
+
+\end{document}

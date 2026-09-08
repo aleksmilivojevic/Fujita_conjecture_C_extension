@@ -1,0 +1,153 @@
+CP7, CP9, and CP11 positive controls passed.
+Todd, Omega^1, Omega^2 computations independently match the Chern identities.
+CP7 Hilbert polynomial check passed.
+Index 4 elimination and reduction modulo 9 verified.
+Index 2 elimination verified; exactly the polynomial used by the finite certificate.
+Index 2: 1224 pairs; 114 nonnegative discriminants; 0 squares.
+Nonnegative counts for m=0,...,8: [0, 0, 4, 7, 12, 16, 20, 25, 30]
+After square-residue test modulo 5 : 90
+After square-residue test modulo 7 : 60
+After square-residue test modulo 11 : 33
+After square-residue test modulo 13 : 23
+After square-residue test modulo 17 : 16
+After square-residue test modulo 19 : 8
+After square-residue test modulo 23 : 3
+After square-residue test modulo 29 : 0
+Index 4: no solution of 4*b^2+3*b*m+6 == 0 mod 9.
+Universal signature conversion independently derived.
+Index 3 : Hilbert polynomial and signature identity verified.
+Index 1 : Hilbert polynomial and signature identity verified.
+Index 9 : Hilbert polynomial and signature identity verified.
+Index 3: for every m=0,...,9, a modulus excludes every integer u.
+Index 1: initial pairs: 2650
+After modulus 4 : 1325
+After modulus 9 : 662
+After modulus 16 : 332
+After modulus 25 : 160
+After modulus 27 : 148
+After modulus 49 : 80
+After modulus 11 : 64
+After modulus 13 : 39
+After modulus 17 : 25
+After modulus 19 : 14
+After modulus 23 : 8
+After modulus 29 : 3
+After modulus 31 : 2
+After modulus 37 : 1
+After modulus 43 : 0
+Both nonmaximal indices are excluded.
+n=7, r=4: every section count excluded.
+n=9, r=6: every section count excluded.
+n=11, r=8: every section count excluded.
+Bernoulli obstruction: delta is 0, 1, or 2 modulo 691.
+Dimensions 15 and 27: both weighted models have Euler number different from n+1.
+n=6, r=1: every h0(L)=0,...,6 excluded.
+n=8, r=3: every h0(L)=0,...,8 excluded.
+n=10, r=5: every h0(L)=0,...,10 excluded.
+n=14, r=9: every h0(L)=0,...,14 excluded.
+n=20, r=15: every h0(L)=0,...,20 excluded.
+n=50, r=45: every h0(L)=0,...,50 excluded.
+C9 index 2: quartic derived; independent Hilbert checks passed.
+Python bit-set representation agrees with literal enumeration.
+C9 r=2: 102,797,460 initial triples.
+C9 r=2: modulo 13, 71,051,845 triples survive.
+C9 r=2: modulo 17, 47,418,292 triples survive.
+C9 r=2: modulo 19, 31,752,841 triples survive.
+C9 r=2: modulo 23, 20,583,262 triples survive.
+C9 r=2: modulo 29, 13,643,896 triples survive.
+C9 r=2: modulo 31, 8,899,360 triples survive.
+C9 r=2: modulo 37, 5,721,568 triples survive.
+C9 r=2: modulo 41, 3,671,815 triples survive.
+C9 r=2: modulo 43, 2,357,661 triples survive.
+C9 r=2: modulo 47, 1,511,609 triples survive.
+C9 r=2: modulo 53, 964,275 triples survive.
+C9 r=2: modulo 59, 611,168 triples survive.
+C9 r=2: modulo 61, 390,389 triples survive.
+C9 r=2: modulo 67, 248,724 triples survive.
+C9 r=2: modulo 71, 157,634 triples survive.
+C9 r=2: modulo 73, 99,718 triples survive.
+C9 r=2: modulo 79, 63,012 triples survive.
+C9 r=2: modulo 83, 40,028 triples survive.
+C9 r=2: modulo 89, 25,330 triples survive.
+C9 r=2: modulo 97, 16,021 triples survive.
+C9 r=2: modulo 101, 10,047 triples survive.
+C9 r=2: modulo 103, 6,324 triples survive.
+C9 r=2: modulo 107, 3,958 triples survive.
+C9 r=2: modulo 109, 2,444 triples survive.
+C9 r=2: modulo 113, 1,501 triples survive.
+C9 r=2: modulo 127, 938 triples survive.
+C9 r=2: modulo 131, 579 triples survive.
+C9 r=2: modulo 137, 357 triples survive.
+C9 r=2: modulo 139, 217 triples survive.
+C9 r=2: modulo 149, 136 triples survive.
+C9 r=2: modulo 151, 87 triples survive.
+C9 r=2: modulo 157, 57 triples survive.
+C9 r=2: modulo 163, 39 triples survive.
+C9 r=2: modulo 167, 25 triples survive.
+C9 r=2: modulo 173, 14 triples survive.
+C9 r=2: modulo 179, 10 triples survive.
+C9 r=2: modulo 181, 3 triples survive.
+C9 r=2: modulo 191, 3 triples survive.
+C9 r=2: modulo 193, 2 triples survive.
+C9 r=2: modulo 197, 2 triples survive.
+C9 r=2: modulo 199, 1 triples survive.
+C9 r=2: modulo 211, 1 triples survive.
+C9 r=2: modulo 223, 0 triples survive.
+C10 r=1: 672,398,100 initial triples.
+C10 r=1: modulo 3, 448,265,745 triples survive.
+C10 r=1: modulo 5, 267,329,529 triples survive.
+C10 r=1: modulo 7, 181,171,361 triples survive.
+C10 r=1: modulo 11, 119,711,405 triples survive.
+C10 r=1: modulo 13, 80,209,438 triples survive.
+C10 r=1: modulo 17, 51,982,239 triples survive.
+C10 r=1: modulo 19, 33,510,036 triples survive.
+C10 r=1: modulo 23, 21,301,530 triples survive.
+C10 r=1: modulo 29, 13,548,080 triples survive.
+C10 r=1: modulo 31, 8,661,101 triples survive.
+C10 r=1: modulo 37, 5,489,690 triples survive.
+C10 r=1: modulo 41, 3,474,806 triples survive.
+C10 r=1: modulo 43, 2,211,620 triples survive.
+C10 r=1: modulo 47, 1,397,055 triples survive.
+C10 r=1: modulo 53, 887,441 triples survive.
+C10 r=1: modulo 59, 568,511 triples survive.
+C10 r=1: modulo 61, 360,233 triples survive.
+C10 r=1: modulo 67, 227,836 triples survive.
+C10 r=1: modulo 71, 144,692 triples survive.
+C10 r=1: modulo 73, 91,881 triples survive.
+C10 r=1: modulo 79, 58,870 triples survive.
+C10 r=1: modulo 83, 37,415 triples survive.
+C10 r=1: modulo 89, 23,681 triples survive.
+C10 r=1: modulo 97, 14,926 triples survive.
+C10 r=1: modulo 101, 9,501 triples survive.
+C10 r=1: modulo 103, 6,032 triples survive.
+C10 r=1: modulo 107, 3,869 triples survive.
+C10 r=1: modulo 109, 2,403 triples survive.
+C10 r=1: modulo 113, 1,511 triples survive.
+C10 r=1: modulo 127, 946 triples survive.
+C10 r=1: modulo 131, 614 triples survive.
+C10 r=1: modulo 137, 409 triples survive.
+C10 r=1: modulo 139, 254 triples survive.
+C10 r=1: modulo 149, 148 triples survive.
+C10 r=1: modulo 151, 90 triples survive.
+C10 r=1: modulo 157, 63 triples survive.
+C10 r=1: modulo 163, 41 triples survive.
+C10 r=1: modulo 167, 28 triples survive.
+C10 r=1: modulo 173, 18 triples survive.
+C10 r=1: modulo 179, 12 triples survive.
+C10 r=1: modulo 181, 7 triples survive.
+C10 r=1: modulo 191, 3 triples survive.
+C10 r=1: modulo 193, 3 triples survive.
+C10 r=1: modulo 197, 2 triples survive.
+C10 r=1: modulo 199, 1 triples survive.
+C10 r=1: modulo 211, 1 triples survive.
+C10 r=1: modulo 223, 1 triples survive.
+C10 r=1: modulo 227, 1 triples survive.
+C10 r=1: modulo 229, 1 triples survive.
+C10 r=1: modulo 233, 1 triples survive.
+C10 r=1: modulo 239, 0 triples survive.
+n=14: modulo 31, 4299 pairs survive.
+n=14: modulo 61, 175 pairs survive.
+n=14: modulo 97, 5 pairs survive.
+n=14: modulo 113, 0 pairs survive.
+ALL PYTHON CHECKS PASSED.
+Elapsed seconds: 69.913
